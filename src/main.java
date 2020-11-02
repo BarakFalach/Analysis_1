@@ -36,8 +36,10 @@ public class main {
                     login_WebUser(scan);
                     break;
                 case "4": //Add Product
+                    add_Product(scan);
                     break;
                 case "5": //Delete Product
+                    delete_Product(scan);
                     break;
                 case "6": //Show all objects
                     break;
@@ -63,7 +65,7 @@ public class main {
                 System.out.println("Please Enter street:");
                 String street = scan.nextLine();
                 System.out.println("Please Enter number of apartment:");
-                int number = scan.nextInt();
+                String number = scan.nextLine();
                 System.out.println("Please Enter Phone number:");
                 String phone = scan.nextLine();
                 System.out.println("Please Enter email:");
@@ -71,19 +73,24 @@ public class main {
                 System.out.println("Please Enter billing address:");
                 String billing_address = scan.nextLine();
                 System.out.println("Please Enter account balnace:");
-                int balance = scan.nextInt();
+                String balance = scan.nextLine();
                 System.out.println("Is this a Premium account?[y/n]");
-                Customer customer = new Customer(id,new Address(city,street,number),phone,email);
+                Customer customer = new Customer(id,new Address(city,street,Integer.parseInt(number)),phone,email);
                 Web_User user = new Web_User(id,pass,UserState.New);
                 Account account;
+                String toPrint ="";
                 if(scan.nextLine().equals("y")){
-                    account = new PremiumAccount(id,billing_address,false,balance);
+                    account = new PremiumAccount(id,billing_address,false,Integer.parseInt(balance));
+                    toPrint = toPrint.concat("Premium user added");
                 }
-                else account = new Account(id,billing_address,false,balance);
+                else {
+                    account = new Account(id, billing_address, false, Integer.parseInt(balance));
+                    toPrint = toPrint.concat("Regular user added");
+                }
                 customer.setAccount(account);
                 user.setCustomer(customer);
                 web_users.add(user);
-                System.out.println("\t User added!");
+                System.out.println(toPrint);
                 addeduser = false;
             }
         }
@@ -123,17 +130,17 @@ public class main {
                 System.out.println("Please insert name to product "+ id + " :");
                 String name = scan.nextLine();
                 System.out.println("Please insert supplier to product "+ id + " :");
-                String supplier = scan.nextLine();
-                while(trueSupplier){
-                    if(!suppliers.stream().anyMatch(sup->sup.getId().equals(supplier)))
-                        System.out.println("no such a supplier, another id");
+                do {
+                    String supplier = scan.nextLine();
+                    if(suppliers.stream().noneMatch(sup->sup.getId().equals(supplier)))
+                        System.out.println("no such a supplier, please insert another id");
                     else {
                         mySupplier = suppliers.stream().filter(s->s.getId().equals(supplier)).findFirst().get();
                         trueSupplier = false;
                         System.out.println("Please insert price to product "+ id + " :");
                         price = scan.nextInt();
                     }
-                }
+                } while (trueSupplier);
 
                 Product newProduct = new Product(id,name,mySupplier, price);
                 products.add(newProduct);
@@ -153,7 +160,7 @@ public class main {
                 Product toRemove = products.stream().filter(pro->pro.getId().equals(id)).findFirst().get();
                 toRemove.getMySupplier().removeProduct(toRemove);
                 products.remove(toRemove);
-                System.out.println(String.format("\t product %d Removed!", id));
+                System.out.println(String.format("\t product %s Removed!", id));
                 removedProduct = false;
             }
             else {
