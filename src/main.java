@@ -5,6 +5,7 @@ public class main {
     private static ArrayList<Web_User> web_users = new ArrayList<>();
     private static ArrayList<Supplier> suppliers = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
+    private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
     private static int GlobalOrderCounter = 0;
 
     public static void main(String[] args) {
@@ -211,6 +212,7 @@ public class main {
                         switch (choice) {
                             case "1": //Make Order
                                 System.out.println("Making Order");
+                                MakeOrder(scan,id);
                                 break;
                             case "2": //Display Order
                                 System.out.println("Displaying Order");
@@ -244,12 +246,14 @@ public class main {
         }
     }
 
-    public static void MakeOrder(Scanner scan,Account curAccount) //TODO:: function isn't complete
+    public static void MakeOrder(Scanner scan,String accountID) //TODO:: function isn't complete
     {
+        Account curAccount = getAccountFromID(accountID);
         Supplier curSupplier;
         Product curProduct;
         LineItem curLineItem;
         Order newOrder = new Order(Integer.toString(GlobalOrderCounter),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
+        curAccount.addOrder(newOrder);
         String input;
         int quantity;
         boolean moreProducts = true;
@@ -258,12 +262,13 @@ public class main {
             System.out.println("Enter Supplier Name:");
             input = scan.nextLine();
             curSupplier = getSupplierByName(input);
-            if (curSupplier==null){
+            if (curSupplier==null) {
                 System.out.println("Supplier Doesn't exist");
                 continue;
             }
+            PlacingOrder=false;
             while (moreProducts) {
-                System.out.println("Enter Product ID from the Product List:'\n'");
+                System.out.println("Enter Product ID from the Product List:");
                 System.out.println(curSupplier);
                 input = scan.nextLine();
                 curProduct = curSupplier.getProductByID(input);
@@ -274,9 +279,27 @@ public class main {
                 System.out.println("Enter quantity");
                 quantity = scan.nextInt();
                 curLineItem = new LineItem(quantity,newOrder,curProduct);
-
+                newOrder.addLineItem(curLineItem);
+                System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? Y/N");
+                input = scan.nextLine();
+                if (input.equals("Y"))
+                    continue;
+                moreProducts = false;
             }
+            System.out.println("You Order has Been PLaced");
+            System.out.println(newOrder);
+            //TODO:: add Paymnet to Order
+            //TODO:: add create Object to the Object Data Structure
+
         }
+    }
+
+    public static Account getAccountFromID(String ID){
+        for (Account account : accounts ){
+            if (account.getId().equals(ID))
+                return account;
+        }
+        return null;
     }
 
     public static Supplier getSupplierByName(String curSupplierName){

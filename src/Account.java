@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Account {
@@ -9,6 +10,8 @@ public class Account {
     protected int balance;
     protected ShoppingCart shoppingCart;
     protected Customer customer;
+    protected ArrayList<Order> ordersList;
+    protected ArrayList<Payment> paymentsList;
 
     public Account(String id, String billing_address, boolean is_closed, int balance) {
         this.id = id;
@@ -17,6 +20,15 @@ public class Account {
         this.open = new Date();
         this.closed = null;
         this.balance = balance;
+        this.ordersList = new ArrayList<>();
+        this.paymentsList = new ArrayList<>();
+    }
+
+    public void addOrder(Order newOrder){
+        ordersList.add(newOrder);
+    }
+    public void addPayment(Payment newPayment){
+        paymentsList.add(newPayment);
     }
 
     public String getId() {
