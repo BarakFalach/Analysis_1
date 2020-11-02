@@ -10,12 +10,12 @@ public class Account {
     protected ShoppingCart shoppingCart;
     protected Customer customer;
 
-    public Account(String id, String billing_address, boolean is_closed, Date open, Date closed, int balance) {
+    public Account(String id, String billing_address, boolean is_closed, int balance) {
         this.id = id;
         this.billing_address = billing_address;
         this.is_closed = is_closed;
-        this.open = open;
-        this.closed = closed;
+        this.open = new Date();
+        this.closed = null;
         this.balance = balance;
     }
 
