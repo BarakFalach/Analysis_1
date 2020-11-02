@@ -20,6 +20,11 @@ public class Product {
     public void removeFromSupplier() {
         mySupplier.removeProduct(this);
     }
+
+    public Supplier getMySupplier(){
+        return mySupplier;
+    }
+
     public String toString()
     {
         return "Product ID: " + id +" Product Name: " + name;

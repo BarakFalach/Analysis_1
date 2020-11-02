@@ -14,6 +14,11 @@ public class Supplier {
     {
         productList.add(newProduct);
     }
+
+    public String getId() {
+        return id;
+    }
+
     public void removeProduct(Product productToDelete)
     {
         productList.remove(productToDelete);

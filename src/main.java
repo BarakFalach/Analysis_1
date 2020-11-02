@@ -80,6 +80,63 @@ public class main {
         }
     }
 
+    public static void add_Product(Scanner scan){
+        boolean addedProduct = true;
+        boolean trueSupplier = true;
+        Supplier mySupplier = null;
+        int price = 0;
+        while(addedProduct) {
+            System.out.println("Please Enter id of the new Product:");
+            String id = scan.nextLine();
+            if(products.stream().anyMatch(prod -> prod.getId().equals(id))){
+                System.out.println("Product Already exist please enter another id");
+            }
+            else {
+                System.out.println("Please insert name to product "+ id + " :");
+                String name = scan.nextLine();
+                System.out.println("Please insert supplier to product "+ id + " :");
+                String supplier = scan.nextLine();
+                while(trueSupplier){
+                    if(!suppliers.stream().anyMatch(sup->sup.getId().equals(supplier)))
+                        System.out.println("no such a supplier, another id");
+                    else {
+                        mySupplier = suppliers.stream().filter(s->s.getId().equals(supplier)).findFirst().get();
+                        trueSupplier = false;
+                        System.out.println("Please insert price to product "+ id + " :");
+                        price = scan.nextInt();
+                    }
+                }
+
+                Product newProduct = new Product(id,name,mySupplier, price);
+                products.add(newProduct);
+                mySupplier.addProduct(newProduct);
+                addedProduct = false;
+                System.out.println(String.format("\t Product %s was added!", id));
+            }
+        }
+    }
+
+    public static void delete_Product(Scanner scan){
+        boolean removedProduct = true;
+        while(removedProduct) {
+            System.out.println("Please product id to remove:");
+            String id = scan.nextLine();
+            if(products.stream().anyMatch(product -> product.getId().equals(id))){
+                Product toRemove = products.stream().filter(pro->pro.getId().equals(id)).findFirst().get();
+                toRemove.getMySupplier().removeProduct(toRemove);
+                products.remove(toRemove);
+                System.out.println(String.format("\t product %d Removed!", id));
+                removedProduct = false;
+            }
+            else {
+                System.out.println(String.format("Product %s doesn't exist please try again", id));
+                System.out.println("do you want to try again? [y/n]");
+                String again = scan.nextLine();
+                if(again.equals("n")) removedProduct = false;
+            }
+        }
+    }
+
     private static void initiateSystem() {
         Supplier s = new Supplier("123", "moshe");
         Product p0 = new Product("Bamba", "Bamba", s, 10);
