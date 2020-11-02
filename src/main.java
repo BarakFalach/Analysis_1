@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class main {
 
@@ -8,22 +7,27 @@ public class main {
     private ArrayList<Product> products = new ArrayList<Product>();
 
     public static void main(String[] args) {
-        //ArrayList<Web_User> web_users = new ArrayList<Web_User>();
-        //ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
-        //ArrayList<Product> products = new ArrayList<Product>();
-
     }
 
-    public UserState add_WebUser(int id){
-        //if(Arrays.)
-            //return new UserState.Blocked;
-        return null;
+    public UserState add_WebUser(String id){
+        if(web_users.stream().anyMatch(user -> user.getLogin_id().equals(id))){
+            return UserState.Banned;
+        }
+
+        // Tom - insert password;
+        String password = "223";
+
+        Web_User newUser = new Web_User(id, password, UserState.New);
+        return UserState.New;
     }
 
-    public void remove_WebUser(int id){
+    public void remove_WebUser(String id){
+        if(web_users.stream().anyMatch(user -> user.getLogin_id().equals(id)))
+            web_users.removeIf(o->o.getLogin_id().equals(id));
     }
 
     public void login_WebUser(int id){
+
     }
 
 
