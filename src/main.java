@@ -1,16 +1,17 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Iterator;
-import java.util.Optional;
 
 public class main {
 
-    private static ArrayList<Web_User> web_users = new ArrayList<Web_User>();
-    private ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
-    private ArrayList<Product> products = new ArrayList<Product>();
+    private static ArrayList<Web_User> web_users = new ArrayList<>();
+    private static ArrayList<Supplier> suppliers = new ArrayList<>();
+    private static ArrayList<Product> products = new ArrayList<>();
 
     public static void main(String[] args) {
-        String choice = null;
+
+        initiateSystem();
+
+        String choice;
         Scanner scan = new Scanner(System.in);
         do {
             System.out.println("please choose one of the following numbers:");
@@ -60,15 +61,20 @@ public class main {
             }
         } while (!choice.equals("9")); // end of loop
     }
-    
 
-    public UserState add_WebUser(String id, String password){
-        web_users.add(new Web_User(id, password, UserState.New));
-        return UserState.New;
-    }
+    private static void initiateSystem(){
+        Supplier s = new Supplier("123", "moshe");
+        Product p0 = new Product("Bamba", "Bamba");
+        Product p1 = new Product("Ramen", "Ramen");
 
-    public boolean remove_WebUser(String id){
-        return web_users.removeIf(o -> o.getLogin_id().equals(id));
+        p0.updateSupplier(s);
+        p1.updateSupplier(s);
+        s.addProduct(p0);
+        s.addProduct(p1);
+
+        suppliers.add(s);
+        products.add(p0);
+        products.add(p1);
     }
 
     public UserState login_WebUser(String id, String password){
