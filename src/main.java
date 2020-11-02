@@ -5,6 +5,7 @@ public class main {
     private static ArrayList<Web_User> web_users = new ArrayList<>();
     private static ArrayList<Supplier> suppliers = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
+    private static int GlobalOrderCounter = 0;
 
     public static void main(String[] args) {
 
@@ -234,6 +235,49 @@ public class main {
             web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().getCustomer().getAccount().setIs_closed(true);
             web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().setUserState(UserState.Blocked);
         }
+    }
+
+    public static void MakeOrder(Scanner scan,Account curAccount) //TODO:: function isn't complete
+    {
+        Supplier curSupplier;
+        Product curProduct;
+        LineItem curLineItem;
+        Order newOrder = new Order(Integer.toString(GlobalOrderCounter),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
+        String input;
+        int quantity;
+        boolean moreProducts = true;
+        boolean PlacingOrder = true;
+        while (PlacingOrder){
+            System.out.println("Enter Supplier Name:");
+            input = scan.nextLine();
+            curSupplier = getSupplierByName(input);
+            if (curSupplier==null){
+                System.out.println("Supplier Doesn't exist");
+                continue;
+            }
+            while (moreProducts) {
+                System.out.println("Enter Product ID from the Product List:'\n'");
+                System.out.println(curSupplier);
+                input = scan.nextLine();
+                curProduct = curSupplier.getProductByID(input);
+                if (curProduct==null){
+                    System.out.println("Incorrect Product ID");
+                    continue;
+                }
+                System.out.println("Enter quantity");
+                quantity = scan.nextInt();
+                curLineItem = new LineItem(quantity,newOrder,curProduct);
+
+            }
+        }
+    }
+
+    public static Supplier getSupplierByName(String curSupplierName){
+        for (Supplier supplier : suppliers) {
+            if (supplier.getName().equals(curSupplierName))
+                return supplier;
+        }
+        return null;
     }
 
 }
