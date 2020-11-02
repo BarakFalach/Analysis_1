@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Iterator;
-import java.util.Optional;
 
 public class main {
 
@@ -40,7 +38,6 @@ public class main {
             }
         } while (!choice.equals("9")); // end of loop
     }
-
 
     public static void add_WebUser(Scanner scan){
         boolean addeduser = true;
@@ -83,15 +80,10 @@ public class main {
         }
     }
 
-                    break;
-            }
-        } while (!choice.equals("9")); // end of loop
-    }
-
-    private static void initiateSystem(){
+    private static void initiateSystem() {
         Supplier s = new Supplier("123", "moshe");
-        Product p0 = new Product("Bamba", "Bamba");
-        Product p1 = new Product("Ramen", "Ramen");
+        Product p0 = new Product("Bamba", "Bamba", s, 10);
+        Product p1 = new Product("Ramen", "Ramen", s, 20);
 
         p0.updateSupplier(s);
         p1.updateSupplier(s);
@@ -103,9 +95,6 @@ public class main {
         products.add(p1);
     }
 
-    public UserState login_WebUser(String id, String password){
-        if(web_users.stream().anyMatch(o -> o.getLogin_id().equals(id) && o.getPassword().equals(password))) {
-            web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().setUserState(UserState.Active);
     public static void login_WebUser(Scanner scan){
         boolean loggeduser = true;
         while(loggeduser){
@@ -130,7 +119,6 @@ public class main {
                 System.out.println("User "+id+" dosen't exist please try again");
             }
         }
-        return UserState.Active;
     }
 
     public UserState logoutUser(String id){

@@ -17,8 +17,7 @@ public class Product {
             removeFromSupplier();
         mySupplier = newSupplier;
     }
-    public void removeFromSupplier()
-    {
+    public void removeFromSupplier() {
         mySupplier.removeProduct(this);
     }
     public String toString()
