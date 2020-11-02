@@ -2,6 +2,8 @@ public class Web_User {
     private String login_id;
     private String password;
     private UserState state;
+    private Customer customer;
+    private ShoppingCart shoppingCart;
 
     public Web_User(String id, String pass, UserState userState) {
         this.login_id = id;
@@ -17,15 +19,27 @@ public class Web_User {
         return password;
     }
 
-    public void logout() {
-        this.state = UserState.Blocked;
-    }
-
     public void setUserState(UserState userState) {
         this.state = userState;
     }
 
     public UserState getUserState() {
         return state;
+    }
+
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+    }
+
+    public Customer getCustomer(){
+        return this.customer;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart){
+        this.shoppingCart = shoppingCart;
+    }
+
+    public ShoppingCart getShoppingCart(){
+        return this.shoppingCart;
     }
 }

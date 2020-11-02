@@ -26,7 +26,7 @@ public class Supplier {
     public String toString(){
         StringBuilder res = new StringBuilder(
                 "Supplier ID: " +
-                id.toString() +
+                id +
                 " Supplier Name: " +
                 name + '\n' +
                 "Supplier Products:" + '\n');
@@ -36,8 +36,4 @@ public class Supplier {
         }
         return res.toString();
     }
-
-
-
-
 }

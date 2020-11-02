@@ -5,12 +5,15 @@ import java.util.Optional;
 
 public class main {
 
-    private static ArrayList<Web_User> web_users = new ArrayList<Web_User>();
-    private ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
-    private ArrayList<Product> products = new ArrayList<Product>();
+    private static ArrayList<Web_User> web_users = new ArrayList<>();
+    private static ArrayList<Supplier> suppliers = new ArrayList<>();
+    private static ArrayList<Product> products = new ArrayList<>();
 
     public static void main(String[] args) {
-        String choice = null;
+
+        initiateSystem();
+
+        String choice;
         Scanner scan = new Scanner(System.in);
         do {
             System.out.println("please choose one of the following numbers:");
@@ -80,6 +83,29 @@ public class main {
         }
     }
 
+                    break;
+            }
+        } while (!choice.equals("9")); // end of loop
+    }
+
+    private static void initiateSystem(){
+        Supplier s = new Supplier("123", "moshe");
+        Product p0 = new Product("Bamba", "Bamba");
+        Product p1 = new Product("Ramen", "Ramen");
+
+        p0.updateSupplier(s);
+        p1.updateSupplier(s);
+        s.addProduct(p0);
+        s.addProduct(p1);
+
+        suppliers.add(s);
+        products.add(p0);
+        products.add(p1);
+    }
+
+    public UserState login_WebUser(String id, String password){
+        if(web_users.stream().anyMatch(o -> o.getLogin_id().equals(id) && o.getPassword().equals(password))) {
+            web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().setUserState(UserState.Active);
     public static void login_WebUser(Scanner scan){
         boolean loggeduser = true;
         while(loggeduser){
@@ -104,6 +130,7 @@ public class main {
                 System.out.println("User "+id+" dosen't exist please try again");
             }
         }
+        return UserState.Active;
     }
 
     public UserState logoutUser(String id){
