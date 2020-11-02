@@ -7,7 +7,7 @@ public class Order {
     private Date shipped;
     private Address ship_to;
     private  OrderStatus status;
-    private float total;
+    private float total; //TODO:: what is total??
     private ArrayList<LineItem> lineItemList;
     private ArrayList<Payment> paymentsList;
     private Account myAccount;
@@ -16,7 +16,7 @@ public class Order {
         this.myAccount = myAccount;
         this.number = number;
         this.ordered = ordered;
-//        this.ship_to = myAccount.getAddress(); //TODO:: update address
+        this.ship_to = myAccount.getCustomer().getAddress();
         this.status = OrderStatus.New;
         lineItemList = new ArrayList<>();
         paymentsList = new ArrayList<>();
@@ -37,6 +37,25 @@ public class Order {
 
     public void addPayment(Payment newPayment){
         paymentsList.add(newPayment);
+    }
+
+    public Account getMyAccount() {
+        return myAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "number='" + number + '\'' +
+                ", ordered=" + ordered +
+                ", shipped=" + shipped +
+                ", ship_to=" + ship_to +
+                ", status=" + status +
+                ", total=" + total +
+                ", lineItemList=" + lineItemList +
+                ", paymentsList=" + paymentsList +
+                ", myAccount=" + myAccount +
+                '}';
     }
 }
 

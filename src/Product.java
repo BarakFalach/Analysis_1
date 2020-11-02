@@ -17,13 +17,23 @@ public class Product {
             removeFromSupplier();
         mySupplier = newSupplier;
     }
-    public void removeFromSupplier()
-    {
+    public void removeFromSupplier() {
         mySupplier.removeProduct(this);
     }
-    public String toString()
-    {
-        return "Product ID: " + id +" Product Name: " + name;
+
+    public Supplier getMySupplier(){
+        return mySupplier;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", mySupplier=" + mySupplier +
+                ", price=" + price +
+                '}';
     }
 
     public int getPrice() { return price ;}
