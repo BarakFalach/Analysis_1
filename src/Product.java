@@ -11,10 +11,17 @@ public class Product {
     }
     public void updateSupplier(Supplier newSupplier)
     {
+        if(mySupplier!=null)
+            removeFromSupplier();
         mySupplier = newSupplier;
+    }
+    public void removeFromSupplier()
+    {
+        mySupplier.removeProduct(this);
     }
     public String toString()
     {
         return "Product ID: " + id.toString() +" Product Name: " + name;
     }
+
 }
