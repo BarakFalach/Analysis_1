@@ -25,9 +25,15 @@ public class Product {
         return mySupplier;
     }
 
-    public String toString()
-    {
-        return "Product ID: " + id +" Product Name: " + name;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", mySupplier=" + mySupplier +
+                ", price=" + price +
+                '}';
     }
 
     public int getPrice() { return price ;}

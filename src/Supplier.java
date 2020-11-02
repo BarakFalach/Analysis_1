@@ -28,17 +28,25 @@ public class Supplier {
         return productList.indexOf(product);
     }
 
-    public String toString(){
-        StringBuilder res = new StringBuilder(
-                "Supplier ID: " +
-                id +
-                " Supplier Name: " +
-                name + '\n' +
-                "Supplier Products:" + '\n');
-        for (Product product : productList) {
-            res.append(product.toString());
-            res.append('\n');
+    public Product getProductByID(String id)
+    {
+        for (Product product : productList){
+            if (product.getId()==id)
+                return product;
         }
-        return res.toString();
+        return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", productList=" + productList +
+                '}';
     }
 }
