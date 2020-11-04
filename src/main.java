@@ -270,7 +270,7 @@ public class main {
                     loggeduser = false;
                 }
             } else {
-                System.out.println("User " + id + " dosen't exist please try again");
+                System.out.println("User id:  " + id + " doesn't exist please try again");
                 loggeduser = false;
             }
         }
@@ -329,7 +329,7 @@ public class main {
 
     public static void MakeOrder(Scanner scan,String accountID) //TODO:: function isn't complete
     {
-        Account curAccount = getAccountFromID(accountID);
+        Account curAccount = (Account) objects.get(accountID);
         Supplier curSupplier;
         Product curProduct;
         LineItem curLineItem;
@@ -341,7 +341,7 @@ public class main {
         newOrder.setMyAccount(curAccount);
         curAccount.addOrder(newOrder);
         String input;
-        int quantity;
+        String quantity;
         boolean moreProducts = true;
         boolean PlacingOrder = true;
         while (PlacingOrder){
@@ -363,8 +363,8 @@ public class main {
                     continue;
                 }
                 System.out.println("Enter quantity");
-                quantity = scan.nextInt();
-                curLineItem = new LineItem(IDGenerate(),quantity,newOrder,curProduct);
+                quantity = scan.nextLine();
+                curLineItem = new LineItem(IDGenerate(),Integer.parseInt(quantity),newOrder,curProduct);
                 objects.put(curLineItem.getId(),curLineItem);
                 newOrder.addLineItem(curLineItem); //TODO:: add ID for everyObject
                 curAccount.getShoppingCart().addLineItem(curLineItem);
