@@ -91,21 +91,4 @@ public class Account extends myObject{
         this.customer = customer;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id='" + id + '\'' +
-                ", billing_address='" + billing_address + '\'' +
-                ", is_closed=" + is_closed +
-                ", open=" + open +
-                ", closed=" + closed +
-                ", balance=" + balance +
-                ", shoppingCart=" + shoppingCart +
-                ", customer=" + customer +
-                ", ordersList=" + ordersList +
-                ", paymentsList=" + paymentsList +
-                '}';
-    }
 }
