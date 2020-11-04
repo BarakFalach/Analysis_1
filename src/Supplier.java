@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Supplier {
+public class Supplier extends myObject{
     private String id;
     private String name;
     private ArrayList<Product> productList;
@@ -41,12 +41,17 @@ public class Supplier {
         return name;
     }
 
-    @Override
-    public String toString() {
+    public String toString(){
         return "Supplier{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", productList=" + productList +
                 '}';
+    }
+
+
+    @Override
+    public String showFullObject() {
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Account {
+public class Account extends myObject{
     protected String id;
     protected String billing_address;
     protected boolean is_closed;
@@ -89,5 +89,15 @@ public class Account {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public String showShortObject() {
+        return null;
+    }
+
+    @Override
+    public String showFullObject() {
+        return null;
     }
 }

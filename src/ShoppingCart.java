@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ShoppingCart {
+public class ShoppingCart extends myObject {
     private Date created;
+    private String id;
     private Account account;
     private Web_User web_user;
     private ArrayList<LineItem> lineItemList;
 
-    public ShoppingCart(Date created, Account account) {
+    public ShoppingCart(String id, Date created, Account account) {
+        this.id = id;
         this.created = created;
         this.account = account;
     }
@@ -33,11 +35,21 @@ public class ShoppingCart {
     }
 
     public LineItem getLineItem(String id) {
-        return this.lineItemList.stream().filter(o -> o.getID().equals(id)).findFirst().get();
+        return this.lineItemList.stream().filter(o -> o.getId().equals(id)).findFirst().get();
     }
 
     public void addLineItem(LineItem lineItem) {
         this.lineItemList.add(lineItem);
     }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String showFullObject() {
+        return null;
+    }
+
 
 }

@@ -1,4 +1,4 @@
-public class Web_User {
+public class Web_User extends myObject{
     private String login_id;
     private String password;
     private UserState state;
@@ -9,10 +9,6 @@ public class Web_User {
         this.login_id = id;
         this.password = pass;
         this.state = userState;
-    }
-
-    public String getLogin_id() {
-        return login_id;
     }
 
     public String getPassword() {
@@ -41,5 +37,15 @@ public class Web_User {
 
     public ShoppingCart getShoppingCart(){
         return this.shoppingCart;
+    }
+
+    @Override
+    protected String getId() {
+        return login_id;
+    }
+
+    @Override
+    public String showFullObject() {
+        return null;
     }
 }

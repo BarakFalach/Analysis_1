@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public abstract class Payment {
+public abstract class Payment extends myObject{
     protected String id;
     protected Date paid;
     protected float total; //TODO:: what is total!
@@ -15,5 +15,12 @@ public abstract class Payment {
         this.myAccount = myAccount;
     }
 
+    @Override
+    public String getId() {
+        return id;
+    }
 
+    public String showFullObject(){
+        return "s";
+    }
 }

@@ -1,4 +1,4 @@
-public class Customer {
+public class Customer extends myObject{
     private String id;
     private Address address;
     private String phone;
@@ -15,6 +15,11 @@ public class Customer {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String showFullObject() {
+        return null;
     }
 
     public void setId(String id) {

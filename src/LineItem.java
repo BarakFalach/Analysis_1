@@ -1,4 +1,4 @@
-public class LineItem {
+public class LineItem extends myObject{
     private int quantity;
     private int price;
     private Order myOrder;
@@ -18,7 +18,12 @@ public class LineItem {
     public int getPrice() {
         return price;
     }
-    public String getID(){
+    public String getId(){
         return this.ID;
+    }
+
+    @Override
+    public String showFullObject() {
+        return null;
     }
 }

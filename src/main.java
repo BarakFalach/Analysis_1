@@ -8,6 +8,7 @@ public class main {
     private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
     private static int GlobalOrderCounter = 0;
     private static int GlobalSerialNumber = 0 ;
+    private static Map<String, myObject> objects = new Hashtable<>();
 
     public static void main(String[] args) {
 
@@ -56,7 +57,7 @@ public class main {
         while(addeduser) {
             System.out.println("Please Enter id of the new User:");
             String id = scan.nextLine();
-            if(web_users.stream().anyMatch(user -> user.getLogin_id().equals(id))){
+            if(web_users.stream().anyMatch(user -> user.getId().equals(id))){
                 System.out.println("User Already exist please enter another id");
             }
             else {
@@ -104,8 +105,8 @@ public class main {
         while(removeduser) {
             System.out.println("Please Enter id to remove:");
             String id = scan.nextLine();
-            if(web_users.stream().anyMatch(user -> user.getLogin_id().equals(id))){
-                web_users.removeIf(o->o.getLogin_id().equals(id));
+            if(web_users.stream().anyMatch(user -> user.getId().equals(id))){
+                web_users.removeIf(o->o.getId().equals(id));
                 System.out.println("\t User Removed!");
                 removeduser = false;
             }
@@ -122,11 +123,11 @@ public class main {
         boolean addedProduct = true;
         boolean trueSupplier = true;
         Supplier mySupplier = null;
-        int price = 0;
+        String price = "";
         while(addedProduct) {
             System.out.println("Please Enter id of the new Product:");
             String id = scan.nextLine();
-            if(products.stream().anyMatch(prod -> prod.getId().equals(id))){
+            if(objects.containsKey(id)){
                 System.out.println("Product Already exist please enter another id");
             }
             else {
@@ -141,12 +142,13 @@ public class main {
                         mySupplier = suppliers.stream().filter(s->s.getId().equals(supplier)).findFirst().get();
                         trueSupplier = false;
                         System.out.println("Please insert price to product "+ id + " :");
-                        price = scan.nextInt();
+                        price = scan.nextLine();
                     }
                 } while (trueSupplier);
 
-                Product newProduct = new Product(id,name,mySupplier, price);
+                Product newProduct = new Product(id,name,mySupplier, Integer.parseInt(price));
                 products.add(newProduct);
+                objects.put(id, newProduct);
                 mySupplier.addProduct(newProduct);
                 addedProduct = false;
                 System.out.printf("\t Product %s was added!%n", id);
@@ -188,6 +190,10 @@ public class main {
         suppliers.add(s);
         products.add(p0);
         products.add(p1);
+        objects.put(s.getId(), s);
+        objects.put(p0.getId(), p0);
+        objects.put(p1.getId(), p1);
+
     }
 
     public static void login_WebUser(Scanner scan) {
@@ -196,7 +202,7 @@ public class main {
         while (loggeduser) {
             System.out.println("Please id to login:");
             String id = scan.nextLine();
-            if (web_users.stream().anyMatch(user -> user.getLogin_id().equals(id))) {
+            if (web_users.stream().anyMatch(user -> user.getId().equals(id))) {
                 System.out.println("Please enter password for " + id + " :");
                 String pass = scan.nextLine();
                 if (web_users.stream().anyMatch(user -> user.getPassword().equals(pass))) {
@@ -244,11 +250,23 @@ public class main {
     }
 
     public static void logoutUser(String id){
-        if(web_users.stream().anyMatch(o -> o.getLogin_id().equals(id))) {
-            web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().getCustomer().getAccount().setClosed(new Date());
-            web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().getCustomer().getAccount().setIs_closed(true);
-            web_users.stream().filter(o -> o.getLogin_id().equals(id)).findFirst().get().setUserState(UserState.Blocked);
+        if(web_users.stream().anyMatch(o -> o.getId().equals(id))) {
+            web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().getCustomer().getAccount().setClosed(new Date());
+            web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().getCustomer().getAccount().setIs_closed(true);
+            web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().setUserState(UserState.Blocked);
         }
+    }
+
+    public static void showAllObjects(){
+        System.out.println("Showing All Objects:");
+        objects.forEach((k,v)-> {
+            System.out.println(objects.get(k).showShortObject());
+        });
+        System.out.println();
+    }
+
+    public static void showObject(Scanner scanner){
+
     }
 
     public static void MakeOrder(Scanner scan,String accountID) //TODO:: function isn't complete

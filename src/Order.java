@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Order {
+public class Order extends myObject{
     private String number;
     private Date ordered;
     private Date shipped;
@@ -59,6 +59,16 @@ public class Order {
                 ", paymentsList=" + paymentsList +
                 ", myAccount=" + myAccount +
                 '}';
+    }
+
+    @Override
+    protected String getId() {
+        return number;
+    }
+
+    @Override
+    public String showFullObject() {
+        return null;
     }
 }
 

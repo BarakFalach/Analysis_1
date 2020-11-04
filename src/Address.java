@@ -1,4 +1,4 @@
-public class Address {
+public class Address{
     public String city;
     public String street;
     public int number;
@@ -29,4 +29,5 @@ public class Address {
                 ", number=" + number +
                 '}';
     }
+
 }

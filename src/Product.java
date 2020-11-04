@@ -1,4 +1,4 @@
-public class Product {
+public class Product extends myObject{
     private String id;
     private String name;
     private Supplier mySupplier;
@@ -28,6 +28,10 @@ public class Product {
 
     @Override
     public String toString() {
+        return getId();
+    }
+
+    public String toString(String s) {
         return "Product{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
@@ -43,4 +47,9 @@ public class Product {
     }
 
     public String getName() { return name; }
+
+    @Override
+    public String showFullObject() {
+        return null;
+    }
 }
