@@ -21,8 +21,8 @@ public class main {
             System.out.println("3\t Login WebUser");
             System.out.println("4\t Add Product");
             System.out.println("5\t Delete Product");
-            System.out.println("6\t Show all objects");
-            System.out.println("7\t Show Object ID");
+            System.out.println("6\t ShowAllObjects");
+            System.out.println("7\t ShowObjectId");
             System.out.println("9\t quit");
 
             choice = scan.nextLine();
@@ -76,10 +76,10 @@ public class main {
                 System.out.println("Please Enter account balnace:");
                 String balance = scan.nextLine();
                 System.out.println("Is this a Premium account?[y/n]");
-                Customer customer = new Customer(id,new Address(city,street,Integer.parseInt(number)),phone,email);
                 Web_User user = new Web_User(id,pass,UserState.New);
                 Account account;
                 String toPrint ="";
+                Customer customer = new Customer(id,new Address(city,street,Integer.parseInt(number)),phone,email);
                 if(scan.nextLine().equals("y")){
                     account = new PremiumAccount(id,billing_address,false,Integer.parseInt(balance));
                     toPrint = toPrint.concat("Premium user added");
@@ -90,6 +90,7 @@ public class main {
                 }
                 customer.setAccount(account);
                 user.setCustomer(customer);
+                accounts.add(account);
                 web_users.add(user);
                 System.out.println(toPrint);
                 addeduser = false;
@@ -147,7 +148,7 @@ public class main {
                 products.add(newProduct);
                 mySupplier.addProduct(newProduct);
                 addedProduct = false;
-                System.out.println(String.format("\t Product %s was added!", id));
+                System.out.printf("\t Product %s was added!%n", id);
             }
         }
     }
@@ -161,11 +162,11 @@ public class main {
                 Product toRemove = products.stream().filter(pro->pro.getId().equals(id)).findFirst().get();
                 toRemove.getMySupplier().removeProduct(toRemove);
                 products.remove(toRemove);
-                System.out.println(String.format("\t product %s Removed!", id));
+                System.out.printf("\t product %s Removed!%n", id);
                 removedProduct = false;
             }
             else {
-                System.out.println(String.format("Product %s doesn't exist please try again", id));
+                System.out.printf("Product %s doesn't exist please try again%n", id);
                 System.out.println("do you want to try again? [y/n]");
                 String again = scan.nextLine();
                 if(again.equals("n")) removedProduct = false;
@@ -204,10 +205,10 @@ public class main {
                     // Link Product(premium only)
                     // Logout WebUser
                     do {
-                        System.out.println("1-\t Make order");
-                        System.out.println("2-\t Display order");
-                        System.out.println("3-\t Link Product (Premium Only)");
-                        System.out.println("4-\t Logout");
+                        System.out.println("1\t Make order");
+                        System.out.println("2\t Display order");
+                        System.out.println("3\t Link Product (Premium Only)");
+                        System.out.println("4\t Logout");
                         String choice = scan.nextLine();
                         switch (choice) {
                             case "1": //Make Order
@@ -222,7 +223,9 @@ public class main {
                                 break;
                             case "4": //Logout
                                 logoutUser(id);
+                                System.out.println("Logged Out!");
                                 loginmenu = false;
+                                loggeduser = false;
                                 break;
                         }
 
@@ -234,6 +237,7 @@ public class main {
                 }
             } else {
                 System.out.println("User " + id + " dosen't exist please try again");
+                loggeduser = false;
             }
         }
     }
@@ -278,6 +282,7 @@ public class main {
                 }
                 System.out.println("Enter quantity");
                 quantity = scan.nextInt();
+                //TODO: add gashash ID generator
                 curLineItem = new LineItem(quantity,newOrder,curProduct);
                 newOrder.addLineItem(curLineItem);
                 System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? Y/N");
