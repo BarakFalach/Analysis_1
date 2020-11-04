@@ -31,7 +31,7 @@ public class Supplier extends myObject{
     public Product getProductByID(String id)
     {
         for (Product product : productList){
-            if (product.getId()==id)
+            if (product.getId().equals(id))
                 return product;
         }
         return null;

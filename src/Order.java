@@ -12,7 +12,8 @@ public class Order extends myObject{
     private ArrayList<Payment> paymentsList;
     private Account myAccount;
 
-    public Order(String number, Date ordered) {
+    public Order(String number, Date ordered, Account myAccount) {
+        this.myAccount = myAccount;
         this.number = number;
         this.ordered = ordered;
         this.ship_to = myAccount.getCustomer().getAddress();

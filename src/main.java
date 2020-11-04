@@ -95,6 +95,7 @@ public class main {
                 objects.put(customer.getId(),customer);
                 objects.put(id,account);
                 customer.setAccount(account);
+                account.setCustomer(customer);//TODO:: Understand the set customer stuff
                 user.setCustomer(customer);
                 shoppingCart = new ShoppingCart(IDGenerate(),account.getOpen(),account);
                 objects.put(shoppingCart.getId(),shoppingCart);
@@ -195,6 +196,7 @@ public class main {
         Account a = new Account("000","a",false,100);
         objects.put("000",a);
         customer.setAccount(a);
+        a.setCustomer(customer);
         user.setCustomer(customer);
         ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
         objects.put(shoppingCart.getId(),shoppingCart);
@@ -217,6 +219,7 @@ public class main {
         objects.put(p1.getId(), p1);
         objects.put(a.getId(),a);
         objects.put(c.getId(),c);
+
 
     }
 
@@ -328,7 +331,10 @@ public class main {
         Supplier curSupplier;
         Product curProduct;
         LineItem curLineItem;
-        Order newOrder = new Order(IDGenerate(),curAccount.getOpen()); //TODO:: get Date from account need to be Checked
+
+        Date testD = curAccount.getOpen();
+
+        Order newOrder = new Order(IDGenerate(),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
         objects.put(newOrder.getId(),newOrder);
         newOrder.setMyAccount(curAccount);
         curAccount.addOrder(newOrder);
