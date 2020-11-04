@@ -56,9 +56,9 @@ public class Order extends myObject{
                 ", ship_to=" + ship_to +
                 ", status=" + status +
                 ", total=" + total +
-                ", lineItemList=" + lineItemList +
-                ", paymentsList=" + paymentsList +
-                ", myAccount=" + myAccount +
+                ", lineItemList=" + lineItemList.toString() +
+                ", paymentsList=" + paymentsList.toString() +
+                ", myAccount=" + myAccount.getId() +
                 '}';
     }
 

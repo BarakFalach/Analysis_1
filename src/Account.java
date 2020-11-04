@@ -95,6 +95,11 @@ public class Account extends myObject{
         this.customer = customer;
     }
 
+    public String getLastOrder(){
+        if(ordersList.isEmpty())
+            return "No order to show";
+        return ordersList.get(ordersList.size()-1).toString();
+    }
 
     @Override
     public String toString() {

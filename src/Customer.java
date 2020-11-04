@@ -15,7 +15,7 @@ public class Customer extends myObject{
 
     public String getId() {
         return id;
-    }
+}
 
     public void setId(String id) {
         this.id = id;
@@ -59,5 +59,17 @@ public class Customer extends myObject{
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id='" + id + '\'' +
+                ", address=" + address.toString() +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", web_user=" + web_user.getId() +
+                ", account=" + account.getId() +
+                '}';
     }
 }

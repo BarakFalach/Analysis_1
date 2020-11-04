@@ -4,10 +4,10 @@ import java.util.*;
 
 public class main {
 
-    private static ArrayList<Web_User> web_users = new ArrayList<>();
+    //private static ArrayList<Web_User> web_users = new ArrayList<>();
     private static ArrayList<Supplier> suppliers = new ArrayList<>();
-    private static ArrayList<Product> products = new ArrayList<>();
-    private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
+    //private static ArrayList<Product> products = new ArrayList<>();
+    //private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
     private static int GlobalSerialNumber = 0 ;
     private static Map<String, myObject> objects = new Hashtable<>();
 
@@ -101,8 +101,8 @@ public class main {
                 user.setCustomer(customer);
                 shoppingCart = new ShoppingCart(IDGenerate(),account.getOpen(),account);
                 objects.put(shoppingCart.getId(),shoppingCart);
-                accounts.add(account);
-                web_users.add(user);
+                //accounts.add(account);
+                //web_users.add(user);
                 System.out.println(toPrint);
                 System.out.println(account.toString());
                 addeduser = false;
@@ -115,8 +115,8 @@ public class main {
         while(removeduser) {
             System.out.println("Please Enter id to remove:");
             String id = scan.nextLine();
-            if(web_users.stream().anyMatch(user -> user.getId().equals(id))){
-                web_users.removeIf(o->o.getId().equals(id));
+            if(objects.containsKey(id)){
+                objects.remove(id);
                 System.out.println("\t User Removed!");
                 removeduser = false;
             }
@@ -146,10 +146,10 @@ public class main {
                 System.out.println("Please insert supplier to product "+ id + " :");
                 do {
                     String supplier = scan.nextLine();
-                    if(suppliers.stream().noneMatch(sup->sup.getId().equals(supplier)))
+                    if(!objects.containsKey(supplier))
                         System.out.println("no such a supplier, please insert another id");
                     else {
-                        mySupplier = suppliers.stream().filter(s->s.getId().equals(supplier)).findFirst().get();
+                        mySupplier = (Supplier) objects.get(supplier);
                         trueSupplier = false;
                         System.out.println("Please insert price to product "+ id + " :");
                         price = scan.nextLine();
@@ -157,7 +157,7 @@ public class main {
                 } while (trueSupplier);
 
                 Product newProduct = new Product(id,name,mySupplier, Integer.parseInt(price));
-                products.add(newProduct);
+                //products.add(newProduct);
                 objects.put(id, newProduct);
                 mySupplier.addProduct(newProduct);
                 addedProduct = false;
@@ -172,9 +172,9 @@ public class main {
             System.out.println("Please product id to remove:");
             String id = scan.nextLine();
             if(objects.containsKey(id)){
-                Product toRemove = products.stream().filter(pro->pro.getId().equals(id)).findFirst().get();
+                Product toRemove = (Product) objects.get(id);
                 toRemove.getMySupplier().removeProduct(toRemove);
-                products.remove(toRemove);
+                //products.remove(toRemove);
                 objects.remove(id);
                 System.out.printf("\t product %s Removed!%n", id);
                 removedProduct = false;
@@ -189,26 +189,29 @@ public class main {
     }
 
     private static void initiateSystem() {
-        Address adress = new Address("a","ads",4);
+        Address address = new Address("a","ads",4);
         Supplier s = new Supplier("123", "moshe");
         Product p0 = new Product("Bamba", "Bamba", s, 10);
         Product p1 = new Product("Ramen", "Ramen", s, 20);
         Web_User user = new Web_User("000","000",UserState.New);
         objects.put("000",user);
-        Customer customer = new Customer(IDGenerate(),new Address("city","street",100),"100","aa");
+        Customer customer = new Customer(IDGenerate(),new Address("Tel-Aviv","Jaffa",100),"100","Almoni@gmail.com");
         objects.put(customer.getId(),customer);
         Account a = new Account(IDGenerate(),"a",false,100);
         objects.put(a.getId(),a);
         customer.setAccount(a);
+        customer.setWeb_user(user);
         a.setCustomer(customer);
         user.setCustomer(customer);
         ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
-        objects.put(shoppingCart.getId(),shoppingCart);
+        shoppingCart.setWeb_user(user);
         user.setShoppingCart(shoppingCart);
-        accounts.add(a);
-        web_users.add(user);
+        objects.put(shoppingCart.getId(),shoppingCart);
 
-        Customer c = new Customer(IDGenerate(),adress,"123","bb");
+        //accounts.add(a);
+        //web_users.add(user);
+
+        Customer c = new Customer(IDGenerate(),address,"123","bb");
         objects.put(c.getId(),c);
 
 
@@ -217,17 +220,17 @@ public class main {
         s.addProduct(p0);
         s.addProduct(p1);
         a.setShoppingCart(shoppingCart);
-        accounts.add(a);
+        //accounts.add(a);
 
+        //suppliers.add(s);
+        //products.add(p0);
+        //products.add(p1);
         suppliers.add(s);
-        products.add(p0);
-        products.add(p1);
         objects.put(s.getId(), s);
         objects.put(p0.getId(), p0);
         objects.put(p1.getId(), p1);
         objects.put(a.getId(),a);
         objects.put(c.getId(),c);
-
     }
 
     public static void login_WebUser(Scanner scan) {
@@ -236,10 +239,10 @@ public class main {
         while (loggeduser) {
             System.out.println("Please id to login:");
             String id = scan.nextLine();
-            if (web_users.stream().anyMatch(user -> user.getId().equals(id))) {
+            if (objects.containsKey(id)) {
                 System.out.println("Please enter password for " + id + " :");
                 String pass = scan.nextLine();
-                if (web_users.stream().anyMatch(user -> user.getPassword().equals(pass))) {
+                if (((Web_User)objects.get(id)).getPassword().equals(pass)) {
                     //new menu
                     // Make order
                     // Display order
@@ -281,18 +284,18 @@ public class main {
     }
 
     private static void DisplayOrder(Scanner scan, String id) {
-
+        System.out.println(((Web_User)objects.get(id)).getCustomer().getAccount().getLastOrder());
     }
 
     private static void LinkProduct(Scanner scan, String id) {
-        if(accounts.stream().filter(o -> o.getId().equals(id)).findFirst().get().getClass().getSimpleName() == "PremiumAccount"){
+        if(objects.get(id).getClass().getSimpleName() == "PremiumAccount"){
             System.out.println("Enter a product ID that you would like to connect");
             String productid = scan.nextLine();
-            if(products.stream().anyMatch(o -> o.getId().equals(productid))){
-                products.stream().filter(o -> o.getId().equals(productid)).findFirst().get().setPremiumAccount((PremiumAccount)accounts.stream().filter(o -> o.getId().equals(id)).findFirst().get());
+            if(objects.containsKey(productid)){
+                ((Product)objects.get(productid)).setPremiumAccount((PremiumAccount)objects.get(id));
                 System.out.println("Enter price for product "+ productid);
                 String newPrice = scan.nextLine();
-                products.stream().filter(o -> o.getId().equals(productid)).findFirst().get().setPrice(Integer.parseInt(newPrice));
+                ((Product)objects.get(productid)).setPrice(Integer.parseInt(newPrice));
                 System.out.println("Product price update successfully");
             }
             else{
@@ -305,11 +308,15 @@ public class main {
     }
 
     public static void logoutUser(String id){
-        if(web_users.stream().anyMatch(o -> o.getId().equals(id))) {
-            web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().getCustomer().getAccount().setClosed(new Date());
-            web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().getCustomer().getAccount().setIs_closed(true);
-            web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().setUserState(UserState.Blocked);
+        if(objects.containsKey(id)) {
+            Web_User wu = (Web_User) objects.get(id);
+            wu.getCustomer().getAccount().setClosed(new Date());
+            wu.getCustomer().getAccount().setIs_closed(true);
+            wu.getCustomer().getAccount().setIs_closed(true);
             System.out.println("Logged Out!");
+        }
+        else {
+            System.out.println("no such a user");
         }
     }
 
@@ -399,9 +406,6 @@ public class main {
                     break;
             }
             System.out.println("You Order has Been PLaced");
-
-            //TODO:: add Payment to Order
-            //TODO:: add create Object to the Object Data Structure
 
         }
     }

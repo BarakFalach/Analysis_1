@@ -32,12 +32,7 @@ public class Product extends myObject{
     }
 
 
-    @Override
     public String toString() {
-        return getId();
-    }
-
-    public String toString(String s) {
         return "Product{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
