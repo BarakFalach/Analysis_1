@@ -8,9 +8,9 @@ public abstract class Payment extends myObject{
     protected Order myOrder;
     protected Account myAccount;
 
-    public Payment(String id, String details, Order myOrder, Account myAccount) {
+    public Payment(String id, Order myOrder, Account myAccount) {
         this.id = id;
-        this.details = details;
+        this.details = myOrder.getId();
         this.myOrder = myOrder;
         this.total = myOrder.getTotal();
         this.myAccount = myAccount;
@@ -19,6 +19,14 @@ public abstract class Payment extends myObject{
     @Override
     public String getId() {
         return id;
+    }
+
+    public void setPaid(Date paid) {
+        this.paid = paid;
+    }
+
+    public Date getPaid() {
+        return paid;
     }
 
     @Override

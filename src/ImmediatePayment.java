@@ -1,6 +1,6 @@
 public class ImmediatePayment extends Payment {
-    public ImmediatePayment(String id, String details, Order myOrder, Account myAccount) {
-        super(id, details, myOrder, myAccount);
+    public ImmediatePayment(String id, Order myOrder, Account myAccount) {
+        super(id, myOrder, myAccount);
     }
     private boolean phoneConfirmation;
 

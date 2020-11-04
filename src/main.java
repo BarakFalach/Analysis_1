@@ -1,3 +1,5 @@
+import com.sun.java.swing.plaf.windows.WindowsInternalFrameTitlePane;
+
 import java.util.*;
 
 public class main {
@@ -225,6 +227,7 @@ public class main {
         objects.put(p1.getId(), p1);
         objects.put(a.getId(),a);
         objects.put(c.getId(),c);
+
     }
 
     public static void login_WebUser(Scanner scan) {
@@ -382,18 +385,17 @@ public class main {
             System.out.println("How would you like to pay?");
             System.out.println("1\t DelayedPayment");
             System.out.println("2\t ImmeditaePayment");
-            Payment p;
             String paymethod = scan.nextLine();
             switch (paymethod){
                 case "1": //TODO: make options to delayed payments
-                    p = new DelayedPayment(IDGenerate(),newOrder.getId(),newOrder,curAccount);
-                    curAccount.addPayment(p);
-                    newOrder.addPayment(p);
+                    createDelayedPayment(newOrder,curAccount,scan);
                     break;
                 case "2":
-                    p = new ImmediatePayment(IDGenerate(),newOrder.getId(),newOrder,curAccount);
+                    Payment p = new ImmediatePayment(IDGenerate(),newOrder,curAccount);
                     curAccount.addPayment(p);
                     newOrder.addPayment(p);
+                    p.setPaid(new Date());
+                    objects.put(p.getId(),p);
                     break;
             }
             System.out.println("You Order has Been PLaced");
@@ -404,13 +406,6 @@ public class main {
         }
     }
 
-    public static Account getAccountFromID(String ID){
-        for (Account account : accounts ){
-            if (account.getId().equals(ID))
-                return account;
-        }
-        return null;
-    }
 
     public static Supplier getSupplierByName(String curSupplierName){
         for (Supplier supplier : suppliers) {
@@ -430,13 +425,50 @@ public class main {
         else if (GlobalSerialNumber>9){
             while (objects.containsKey("0" + GlobalSerialNumber))
             {GlobalSerialNumber++;}
-            id = "0" + GlobalSerialNumber;}
+            if (GlobalSerialNumber>=100){
+                id = IDGenerate();
+                return id;
+            }
+            id = "0" + GlobalSerialNumber;
+        }
 
         else{
             while (objects.containsKey("00" + GlobalSerialNumber))
             {GlobalSerialNumber++;}
-            id = "00" + GlobalSerialNumber;}
+            if (GlobalSerialNumber>=10){
+                id = IDGenerate();
+                return id;
+            }
+            id = "00" + GlobalSerialNumber;
+        }
         return id;
     }
+
+    public static void createDelayedPayment(Order newOrder,Account curAccount,Scanner scan){
+
+        Date testD = new Date();
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(testD);
+        Payment payment;
+
+
+        String input;
+        System.out.println("How many payments would you like to pay?");
+        input = scan.nextLine();
+        System.out.println("You'r Payments are at:");
+
+        for (int i =0;i< Integer.parseInt(input);i++){
+            payment = new DelayedPayment(IDGenerate(),newOrder,curAccount);
+            objects.put(payment.getId(),payment);
+            calender.add(Calendar.MONTH,1);
+            payment.setPaid(calender.getTime());
+            newOrder.addPayment(payment);
+            curAccount.addPayment(payment);
+            System.out.println(payment.getPaid());
+        }
+
+
+    }
+
 
 }
