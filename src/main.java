@@ -368,13 +368,15 @@ public class main {
                 objects.put(curLineItem.getId(),curLineItem);
                 newOrder.addLineItem(curLineItem); //TODO:: add ID for everyObject
                 curAccount.getShoppingCart().addLineItem(curLineItem);
-                System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? Y/N");
+                System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? y/n");
                 input = scan.nextLine();
-                if (input.equals("Y"))
+                if (input.equals("n"))
+                {
                     moreProducts = false;
+                }
             }
             System.out.println("You Order has Been PLaced");
-            System.out.println(newOrder);
+//            System.out.println(newOrder);
             //TODO:: add Payment to Order
             //TODO:: add create Object to the Object Data Structure
 

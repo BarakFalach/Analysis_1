@@ -12,6 +12,7 @@ public class ShoppingCart extends myObject {
         this.id = id;
         this.created = created;
         this.account = account;
+        this.lineItemList = new ArrayList<>();
     }
 
     public void setCreated(Date created) {
