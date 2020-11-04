@@ -6,7 +6,6 @@ public class main {
     private static ArrayList<Supplier> suppliers = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
     private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
-    private static int GlobalOrderCounter = 0;
     private static int GlobalSerialNumber = 0 ;
     private static Map<String, myObject> objects = new Hashtable<>();
 
@@ -44,7 +43,7 @@ public class main {
                 case "5": //Delete Product
                     delete_Product(scan);
                     break;
-                case "6": //Show all objects
+                case "6": showAllObjects();
                     showAllObjects();
                     break;
                 case "7": //Show Object ID
@@ -59,7 +58,7 @@ public class main {
         while(addeduser) {
             System.out.println("Please Enter id of the new User:");
             String id = scan.nextLine();
-            if(web_users.stream().anyMatch(user -> user.getId().equals(id))){
+            if(objects.containsKey(id)){
                 System.out.println("User Already exist please enter another id");
             }
             else {
@@ -82,8 +81,10 @@ public class main {
                 System.out.println("Is this a Premium account?[y/n]");
                 Web_User user = new Web_User(id,pass,UserState.New);
                 Account account;
+                ShoppingCart shoppingCart;
                 String toPrint ="";
-                Customer customer = new Customer(id,new Address(city,street,Integer.parseInt(number)),phone,email);
+                Customer customer = new Customer(IDGenerate(),new Address(city,street,Integer.parseInt(number)),phone,email);
+                objects.put(customer.getId(),customer);
                 if(scan.nextLine().equals("y")){
                     account = new PremiumAccount(id,billing_address,false,Integer.parseInt(balance));
                     toPrint = toPrint.concat("Premium user added");
@@ -92,11 +93,15 @@ public class main {
                     account = new Account(id, billing_address, false, Integer.parseInt(balance));
                     toPrint = toPrint.concat("Regular user added");
                 }
+                objects.put(id,account);
                 customer.setAccount(account);
                 user.setCustomer(customer);
+                shoppingCart = new ShoppingCart(IDGenerate(),account.getOpen(),account);
+                objects.put(shoppingCart.getId(),shoppingCart);
                 accounts.add(account);
                 web_users.add(user);
                 System.out.println(toPrint);
+                System.out.println(account.toString());
                 addeduser = false;
             }
         }
@@ -183,11 +188,13 @@ public class main {
         Supplier s = new Supplier("123", "moshe");
         Product p0 = new Product("Bamba", "Bamba", s, 10);
         Product p1 = new Product("Ramen", "Ramen", s, 20);
+        Account a = new Account("000","a",false,100);
 
         p0.updateSupplier(s);
         p1.updateSupplier(s);
         s.addProduct(p0);
         s.addProduct(p1);
+        accounts.add(a);
 
         suppliers.add(s);
         products.add(p0);
@@ -195,6 +202,7 @@ public class main {
         objects.put(s.getId(), s);
         objects.put(p0.getId(), p0);
         objects.put(p1.getId(), p1);
+        objects.put(a.getId(),a);
 
     }
 
@@ -288,7 +296,8 @@ public class main {
         Supplier curSupplier;
         Product curProduct;
         LineItem curLineItem;
-        Order newOrder = new Order(Integer.toString(GlobalOrderCounter),curAccount.getOpen()); //TODO:: get Date from account need to be Checked
+        Order newOrder = new Order(IDGenerate(),curAccount.getOpen()); //TODO:: get Date from account need to be Checked
+        objects.put(newOrder.getId(),newOrder);
         newOrder.setMyAccount(curAccount);
         curAccount.addOrder(newOrder);
         String input;
@@ -316,6 +325,7 @@ public class main {
                 System.out.println("Enter quantity");
                 quantity = scan.nextInt();
                 curLineItem = new LineItem(IDGenerate(),quantity,newOrder,curProduct);
+                objects.put(curLineItem.getId(),curLineItem);
                 newOrder.addLineItem(curLineItem); //TODO:: add ID for everyObject
                 curAccount.getShoppingCart().addLineItem(curLineItem);
                 System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? Y/N");
@@ -349,12 +359,20 @@ public class main {
 
     public static String IDGenerate(){
         String id;
-        if (GlobalSerialNumber>99){id = Integer.toString(GlobalOrderCounter); }
+        if (GlobalSerialNumber>99){
+            while (objects.containsKey(Integer.toString(GlobalSerialNumber)))
+            {GlobalSerialNumber++;}
+            id = Integer.toString(GlobalSerialNumber);
+        }
+        else if (GlobalSerialNumber>9){
+            while (objects.containsKey("0" + GlobalSerialNumber))
+            {GlobalSerialNumber++;}
+            id = "0" + GlobalSerialNumber;}
 
-        else if (GlobalSerialNumber>9){id = "0" + Integer.toString(GlobalSerialNumber);}
-
-        else{ id  = "00" + Integer.toString(GlobalSerialNumber);}
-        GlobalSerialNumber++;
+        else{
+            while (objects.containsKey("00" + GlobalSerialNumber))
+            {GlobalSerialNumber++;}
+            id = "00" + GlobalSerialNumber;}
         return id;
     }
 
