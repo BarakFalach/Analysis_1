@@ -188,7 +188,17 @@ public class main {
         Supplier s = new Supplier("123", "moshe");
         Product p0 = new Product("Bamba", "Bamba", s, 10);
         Product p1 = new Product("Ramen", "Ramen", s, 20);
+        Web_User user = new Web_User("000","000",UserState.New);
+        Customer customer = new Customer(IDGenerate(),new Address("city","street",100),"100","aa");
+        objects.put(customer.getId(),customer);
         Account a = new Account("000","a",false,100);
+        objects.put("000",a);
+        customer.setAccount(a);
+        user.setCustomer(customer);
+        ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
+        objects.put(shoppingCart.getId(),shoppingCart);
+        accounts.add(a);
+        web_users.add(user);
 
         p0.updateSupplier(s);
         p1.updateSupplier(s);
@@ -224,19 +234,18 @@ public class main {
                     do {
                         System.out.println("1\t Make order");
                         System.out.println("2\t Display order");
-                        System.out.println("3\t Link Product (Premium Only)");
+                        System.out.println("3\t Link Product");
                         System.out.println("4\t Logout");
                         String choice = scan.nextLine();
                         switch (choice) {
                             case "1": //Make Order
-                                System.out.println("Making Order");
                                 MakeOrder(scan,id);
                                 break;
                             case "2": //Display Order
                                 System.out.println("Displaying Order");
                                 break;
                             case "3": //Link Product
-                                System.out.println("Linking Order");
+                                LinkProduct(scan,id);
                                 break;
                             case "4": //Logout
                                 logoutUser(id);
@@ -248,14 +257,33 @@ public class main {
 
                     } while (loginmenu);
                 } else { //Wrong pass or Logout
-                    if(!loginmenu) System.out.println("Logged Out");
-                    else System.out.println("Wrong Password!");
+                    System.out.println("Wrong Password!");
                     loggeduser = false;
                 }
             } else {
                 System.out.println("User " + id + " dosen't exist please try again");
                 loggeduser = false;
             }
+        }
+    }
+
+    private static void LinkProduct(Scanner scan, String id) {
+        if(accounts.stream().filter(o -> o.getId().equals(id)).findFirst().get().getClass().getSimpleName() == "PremiumAccount"){
+            System.out.println("Enter a product ID that you would like to connect");
+            String productid = scan.nextLine();
+            if(products.stream().anyMatch(o -> o.getId().equals(productid))){
+                products.stream().filter(o -> o.getId().equals(productid)).findFirst().get().setPremiumAccount((PremiumAccount)accounts.stream().filter(o -> o.getId().equals(id)).findFirst().get());
+                System.out.println("Enter price for product "+ productid);
+                String newPrice = scan.nextLine();
+                products.stream().filter(o -> o.getId().equals(productid)).findFirst().get().setPrice(Integer.parseInt(newPrice));
+                System.out.println("Product price update successfully");
+            }
+            else{
+                System.out.println("Wrong product ID");
+            }
+        }
+        else{
+            System.out.println("This function is available only for Premium Accounts");
         }
     }
 
