@@ -7,6 +7,7 @@ public class main {
     private static ArrayList<Product> products = new ArrayList<>();
     private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
     private static int GlobalOrderCounter = 0;
+    private static int GlobalSerialNumber = 0 ;
 
     public static void main(String[] args) {
 
@@ -256,7 +257,8 @@ public class main {
         Supplier curSupplier;
         Product curProduct;
         LineItem curLineItem;
-        Order newOrder = new Order(Integer.toString(GlobalOrderCounter),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
+        Order newOrder = new Order(Integer.toString(GlobalOrderCounter),curAccount.getOpen()); //TODO:: get Date from account need to be Checked
+        newOrder.setMyAccount(curAccount);
         curAccount.addOrder(newOrder);
         String input;
         int quantity;
@@ -282,18 +284,17 @@ public class main {
                 }
                 System.out.println("Enter quantity");
                 quantity = scan.nextInt();
-                //TODO: add gashash ID generator
-                curLineItem = new LineItem(quantity,newOrder,curProduct);
-                newOrder.addLineItem(curLineItem);
+                curLineItem = new LineItem(IDGenerate(),quantity,newOrder,curProduct);
+                newOrder.addLineItem(curLineItem); //TODO:: add ID for everyObject
+                curAccount.getShoppingCart().addLineItem(curLineItem);
                 System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? Y/N");
                 input = scan.nextLine();
                 if (input.equals("Y"))
-                    continue;
-                moreProducts = false;
+                    moreProducts = false;
             }
             System.out.println("You Order has Been PLaced");
             System.out.println(newOrder);
-            //TODO:: add Paymnet to Order
+            //TODO:: add Payment to Order
             //TODO:: add create Object to the Object Data Structure
 
         }
@@ -313,6 +314,16 @@ public class main {
                 return supplier;
         }
         return null;
+    }
+    public static String IDGenerate(){
+        String id;
+        if (GlobalSerialNumber>99){id = Integer.toString(GlobalOrderCounter); }
+
+        else if (GlobalSerialNumber>9){id = "0" + Integer.toString(GlobalSerialNumber);}
+
+        else{ id  = "00" + Integer.toString(GlobalSerialNumber);}
+        GlobalSerialNumber++;
+        return id;
     }
 
 }

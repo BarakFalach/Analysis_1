@@ -36,7 +36,7 @@ public class ShoppingCart {
         return this.lineItemList.stream().filter(o -> o.getID().equals(id)).findFirst().get();
     }
 
-    public void setLineItem(LineItem lineItem) {
+    public void addLineItem(LineItem lineItem) {
         this.lineItemList.add(lineItem);
     }
 

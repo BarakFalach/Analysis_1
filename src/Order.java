@@ -12,8 +12,7 @@ public class Order {
     private ArrayList<Payment> paymentsList;
     private Account myAccount;
 
-    public Order(String number, Date ordered,Account myAccount) {
-        this.myAccount = myAccount;
+    public Order(String number, Date ordered) {
         this.number = number;
         this.ordered = ordered;
         this.ship_to = myAccount.getCustomer().getAddress();
@@ -33,6 +32,10 @@ public class Order {
     public void addLineItem(LineItem newLineItem){
         lineItemList.add(newLineItem);
         this.total+=newLineItem.getPrice();
+    }
+
+    public void setMyAccount(Account myAccount) {
+        this.myAccount = myAccount;
     }
 
     public void addPayment(Payment newPayment){
