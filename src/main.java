@@ -43,7 +43,7 @@ public class main {
                 case "5": //Delete Product
                     delete_Product(scan);
                     break;
-                case "6": showAllObjects();
+                case "6": //showAllObjects
                     showAllObjects();
                     break;
                 case "7": //Show Object ID
@@ -169,10 +169,11 @@ public class main {
         while(removedProduct) {
             System.out.println("Please product id to remove:");
             String id = scan.nextLine();
-            if(products.stream().anyMatch(product -> product.getId().equals(id))){
+            if(objects.containsKey(id)){
                 Product toRemove = products.stream().filter(pro->pro.getId().equals(id)).findFirst().get();
                 toRemove.getMySupplier().removeProduct(toRemove);
                 products.remove(toRemove);
+                objects.remove(id);
                 System.out.printf("\t product %s Removed!%n", id);
                 removedProduct = false;
             }
@@ -222,8 +223,8 @@ public class main {
         objects.put(s.getId(), s);
         objects.put(p0.getId(), p0);
         objects.put(p1.getId(), p1);
-
-
+        objects.put(a.getId(),a);
+        objects.put(c.getId(),c);
     }
 
     public static void login_WebUser(Scanner scan) {
@@ -252,14 +253,13 @@ public class main {
                                 MakeOrder(scan,id);
                                 break;
                             case "2": //Display Order
-                                System.out.println("Displaying Order");
+                                DisplayOrder(scan,id);
                                 break;
                             case "3": //Link Product
                                 LinkProduct(scan,id);
                                 break;
                             case "4": //Logout
                                 logoutUser(id);
-                                System.out.println("Logged Out!");
                                 loginmenu = false;
                                 loggeduser = false;
                                 break;
@@ -275,6 +275,10 @@ public class main {
                 loggeduser = false;
             }
         }
+    }
+
+    private static void DisplayOrder(Scanner scan, String id) {
+
     }
 
     private static void LinkProduct(Scanner scan, String id) {
@@ -302,6 +306,7 @@ public class main {
             web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().getCustomer().getAccount().setClosed(new Date());
             web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().getCustomer().getAccount().setIs_closed(true);
             web_users.stream().filter(o -> o.getId().equals(id)).findFirst().get().setUserState(UserState.Blocked);
+            System.out.println("Logged Out!");
         }
     }
 
@@ -330,12 +335,10 @@ public class main {
 
     public static void MakeOrder(Scanner scan,String accountID) //TODO:: function isn't complete
     {
-        Account curAccount = (Account) objects.get(accountID);
+        Account curAccount = ((Web_User) objects.get(accountID)).getCustomer().getAccount();
         Supplier curSupplier;
         Product curProduct;
         LineItem curLineItem;
-
-        Date testD = curAccount.getOpen();
 
         Order newOrder = new Order(IDGenerate(),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
         objects.put(newOrder.getId(),newOrder);
@@ -376,9 +379,25 @@ public class main {
                     moreProducts = false;
                 }
             }
+            System.out.println("How would you like to pay?");
+            System.out.println("1\t DelayedPayment");
+            System.out.println("2\t ImmeditaePayment");
+            Payment p;
+            String paymethod = scan.nextLine();
+            switch (paymethod){
+                case "1": //TODO: make options to delayed payments
+                    p = new DelayedPayment(IDGenerate(),newOrder.getId(),newOrder,curAccount);
+                    curAccount.addPayment(p);
+                    newOrder.addPayment(p);
+                    break;
+                case "2":
+                    p = new ImmediatePayment(IDGenerate(),newOrder.getId(),newOrder,curAccount);
+                    curAccount.addPayment(p);
+                    newOrder.addPayment(p);
+                    break;
+            }
             System.out.println("You Order has Been PLaced");
 
-//            System.out.println(newOrder);
             //TODO:: add Payment to Order
             //TODO:: add create Object to the Object Data Structure
 
