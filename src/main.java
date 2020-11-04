@@ -45,8 +45,10 @@ public class main {
                     delete_Product(scan);
                     break;
                 case "6": //Show all objects
+                    showAllObjects();
                     break;
                 case "7": //Show Object ID
+                    showObject(scan);
                     break;
             }
         } while (!choice.equals("9")); // end of loop
@@ -265,8 +267,19 @@ public class main {
         System.out.println();
     }
 
-    public static void showObject(Scanner scanner){
-
+    public static void showObject(Scanner scan){
+        boolean flag = false;
+        do {
+            System.out.println("Please enter object id to show:");
+            String searchId = scan.nextLine();
+            if(!objects.containsKey(searchId))
+                System.out.println("Object id doesn't exist, please insert another object id");
+            else {
+                System.out.println(objects.get(searchId).toString());
+                System.out.println();
+                flag = true;
+            }
+        } while (!flag);
     }
 
     public static void MakeOrder(Scanner scan,String accountID) //TODO:: function isn't complete
@@ -333,6 +346,7 @@ public class main {
         }
         return null;
     }
+
     public static String IDGenerate(){
         String id;
         if (GlobalSerialNumber>99){id = Integer.toString(GlobalOrderCounter); }

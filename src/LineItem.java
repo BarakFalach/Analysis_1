@@ -22,8 +22,4 @@ public class LineItem extends myObject{
         return this.ID;
     }
 
-    @Override
-    public String showFullObject() {
-        return null;
-    }
 }

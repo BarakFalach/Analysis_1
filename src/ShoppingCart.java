@@ -47,9 +47,13 @@ public class ShoppingCart extends myObject {
     }
 
     @Override
-    public String showFullObject() {
-        return null;
+    public String toString() {
+        return "ShoppingCart{" +
+                "created=" + created +
+                ", id='" + id + '\'' +
+                ", account=" + account.getId() +
+                ", web_user=" + web_user.getId() +
+                ", lineItemList=" + lineItemList.toString() +
+                '}';
     }
-
-
 }

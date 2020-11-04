@@ -17,11 +17,6 @@ public class Customer extends myObject{
         return id;
     }
 
-    @Override
-    public String showFullObject() {
-        return null;
-    }
-
     public void setId(String id) {
         this.id = id;
     }

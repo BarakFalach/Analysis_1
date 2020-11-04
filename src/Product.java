@@ -35,7 +35,7 @@ public class Product extends myObject{
         return "Product{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", mySupplier=" + mySupplier +
+                ", mySupplier=" + mySupplier.getId() +
                 ", price=" + price +
                 '}';
     }
@@ -46,10 +46,4 @@ public class Product extends myObject{
         return id;
     }
 
-    public String getName() { return name; }
-
-    @Override
-    public String showFullObject() {
-        return null;
-    }
 }

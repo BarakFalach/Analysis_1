@@ -96,8 +96,4 @@ public class Account extends myObject{
         return null;
     }
 
-    @Override
-    public String showFullObject() {
-        return null;
-    }
 }

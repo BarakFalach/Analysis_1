@@ -62,13 +62,8 @@ public class Order extends myObject{
     }
 
     @Override
-    protected String getId() {
+    public String getId() {
         return number;
-    }
-
-    @Override
-    public String showFullObject() {
-        return null;
     }
 }
 

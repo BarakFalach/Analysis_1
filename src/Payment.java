@@ -20,7 +20,15 @@ public abstract class Payment extends myObject{
         return id;
     }
 
-    public String showFullObject(){
-        return "s";
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "id='" + id + '\'' +
+                ", paid=" + paid +
+                ", total=" + total +
+                ", details='" + details + '\'' +
+                ", myOrder=" + myOrder.getId() +
+                ", myAccount=" + myAccount.getId() +
+                '}';
     }
 }

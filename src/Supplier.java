@@ -45,13 +45,8 @@ public class Supplier extends myObject{
         return "Supplier{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", productList=" + productList +
+                ", productList=" + productList.toString() +
                 '}';
     }
 
-
-    @Override
-    public String showFullObject() {
-        return null;
-    }
 }

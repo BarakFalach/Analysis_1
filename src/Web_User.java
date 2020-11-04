@@ -40,12 +40,16 @@ public class Web_User extends myObject{
     }
 
     @Override
-    protected String getId() {
+    public String getId() {
         return login_id;
     }
 
     @Override
-    public String showFullObject() {
-        return null;
+    public String toString() {
+        return "Web_User{" +
+                "login_id='" + login_id + '\'' +
+                ", customer=" + customer.getId() +
+                ", shoppingCart=" + shoppingCart.getId() +
+                '}';
     }
 }
