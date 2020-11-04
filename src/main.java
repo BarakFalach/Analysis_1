@@ -83,8 +83,6 @@ public class main {
                 Account account;
                 ShoppingCart shoppingCart;
                 String toPrint ="";
-                Customer customer = new Customer(IDGenerate(),new Address(city,street,Integer.parseInt(number)),phone,email);
-                objects.put(customer.getId(),customer);
                 if(scan.nextLine().equals("y")){
                     account = new PremiumAccount(id,billing_address,false,Integer.parseInt(balance));
                     toPrint = toPrint.concat("Premium user added");
@@ -93,6 +91,8 @@ public class main {
                     account = new Account(id, billing_address, false, Integer.parseInt(balance));
                     toPrint = toPrint.concat("Regular user added");
                 }
+                Customer customer = new Customer(IDGenerate(),new Address(city,street,Integer.parseInt(number)),phone,email);
+                objects.put(customer.getId(),customer);
                 objects.put(id,account);
                 customer.setAccount(account);
                 user.setCustomer(customer);
@@ -185,6 +185,7 @@ public class main {
     }
 
     private static void initiateSystem() {
+        Address adress = new Address("a","ads",4);
         Supplier s = new Supplier("123", "moshe");
         Product p0 = new Product("Bamba", "Bamba", s, 10);
         Product p1 = new Product("Ramen", "Ramen", s, 20);
@@ -200,6 +201,8 @@ public class main {
         accounts.add(a);
         web_users.add(user);
 
+        Customer c = new Customer(IDGenerate(),adress,"123","bb");
+
         p0.updateSupplier(s);
         p1.updateSupplier(s);
         s.addProduct(p0);
@@ -213,6 +216,7 @@ public class main {
         objects.put(p0.getId(), p0);
         objects.put(p1.getId(), p1);
         objects.put(a.getId(),a);
+        objects.put(c.getId(),c);
 
     }
 
