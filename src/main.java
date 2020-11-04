@@ -193,12 +193,13 @@ public class main {
         Web_User user = new Web_User("000","000",UserState.New);
         Customer customer = new Customer(IDGenerate(),new Address("city","street",100),"100","aa");
         objects.put(customer.getId(),customer);
-        Account a = new Account("000","a",false,100);
+        Account a = new Account("002","a",false,100);
         objects.put("000",a);
         customer.setAccount(a);
         a.setCustomer(customer);
         user.setCustomer(customer);
         ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
+        user.setShoppingCart(shoppingCart);
         objects.put(shoppingCart.getId(),shoppingCart);
         accounts.add(a);
         web_users.add(user);
@@ -209,6 +210,7 @@ public class main {
         p1.updateSupplier(s);
         s.addProduct(p0);
         s.addProduct(p1);
+        a.setShoppingCart(shoppingCart);
         accounts.add(a);
 
         suppliers.add(s);
