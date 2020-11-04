@@ -3,7 +3,7 @@ import java.util.Date;
 public abstract class Payment extends myObject{
     protected String id;
     protected Date paid;
-    protected float total; //TODO:: what is total!
+    protected float total;
     protected String details;
     protected Order myOrder;
     protected Account myAccount;
@@ -12,6 +12,7 @@ public abstract class Payment extends myObject{
         this.id = id;
         this.details = details;
         this.myOrder = myOrder;
+        this.total = myOrder.getTotal();
         this.myAccount = myAccount;
     }
 

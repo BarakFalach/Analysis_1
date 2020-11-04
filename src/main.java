@@ -191,20 +191,23 @@ public class main {
         Product p0 = new Product("Bamba", "Bamba", s, 10);
         Product p1 = new Product("Ramen", "Ramen", s, 20);
         Web_User user = new Web_User("000","000",UserState.New);
+        objects.put("000",user);
         Customer customer = new Customer(IDGenerate(),new Address("city","street",100),"100","aa");
         objects.put(customer.getId(),customer);
-        Account a = new Account("002","a",false,100);
-        objects.put("000",a);
+        Account a = new Account(IDGenerate(),"a",false,100);
+        objects.put(a.getId(),a);
         customer.setAccount(a);
         a.setCustomer(customer);
         user.setCustomer(customer);
         ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
-        user.setShoppingCart(shoppingCart);
         objects.put(shoppingCart.getId(),shoppingCart);
+        user.setShoppingCart(shoppingCart);
         accounts.add(a);
         web_users.add(user);
 
         Customer c = new Customer(IDGenerate(),adress,"123","bb");
+        objects.put(c.getId(),c);
+
 
         p0.updateSupplier(s);
         p1.updateSupplier(s);
@@ -219,8 +222,6 @@ public class main {
         objects.put(s.getId(), s);
         objects.put(p0.getId(), p0);
         objects.put(p1.getId(), p1);
-        objects.put(a.getId(),a);
-        objects.put(c.getId(),c);
 
 
     }
@@ -376,6 +377,7 @@ public class main {
                 }
             }
             System.out.println("You Order has Been PLaced");
+
 //            System.out.println(newOrder);
             //TODO:: add Payment to Order
             //TODO:: add create Object to the Object Data Structure

@@ -7,7 +7,7 @@ public class Order extends myObject{
     private Date shipped;
     private Address ship_to;
     private  OrderStatus status;
-    private float total; //TODO:: what is total??
+    private float total;
     private ArrayList<LineItem> lineItemList;
     private ArrayList<Payment> paymentsList;
     private Account myAccount;
@@ -65,6 +65,10 @@ public class Order extends myObject{
     @Override
     public String getId() {
         return number;
+    }
+
+    public float getTotal() {
+        return total;
     }
 }
 
