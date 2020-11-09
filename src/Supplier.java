@@ -9,6 +9,8 @@ public class Supplier extends myObject{
         id = _id;
         name = _name;
         productList = new ArrayList<>();
+        main.addToObjects(id, this);
+        main.addToSupplier(this);
     }
     public void addProduct(Product newProduct)
     {

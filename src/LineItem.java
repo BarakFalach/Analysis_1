@@ -13,6 +13,7 @@ public class LineItem extends myObject{
         this.myShoppingCart=myOrder.getMyAccount().getShoppingCart();
         this.myOrder = myOrder;
         this.ID = ID;
+        main.addToObjects(ID, this);
     }
 
     public int getPrice() {

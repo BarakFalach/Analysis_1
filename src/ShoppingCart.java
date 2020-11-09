@@ -8,11 +8,17 @@ public class ShoppingCart extends myObject {
     private Web_User web_user;
     private ArrayList<LineItem> lineItemList;
 
-    public ShoppingCart(String id, Date created, Account account) {
+    public ShoppingCart(String id, Web_User user) {
         this.id = id;
-        this.created = created;
-        this.account = account;
+        this.web_user = user;
+        this.created = new Date();
         this.lineItemList = new ArrayList<>();
+        user.setShoppingCart(this);
+        main.addToObjects(id, this);
+    }
+
+    public Date getCreated() {
+        return this.created;
     }
 
     public void setCreated(Date created) {
@@ -29,10 +35,6 @@ public class ShoppingCart extends myObject {
 
     public Web_User getWeb_user() {
         return web_user;
-    }
-
-    public void setWeb_user(Web_User web_user) {
-        this.web_user = web_user;
     }
 
     public LineItem getLineItem(String id) {

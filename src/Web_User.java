@@ -9,6 +9,7 @@ public class Web_User extends myObject{
         this.login_id = id;
         this.password = pass;
         this.state = userState;
+        main.addToObjects(id, this);
     }
 
     public String getPassword() {
@@ -25,6 +26,7 @@ public class Web_User extends myObject{
 
     public void setCustomer(Customer customer){
         this.customer = customer;
+        customer.setWeb_user(this);
     }
 
     public Customer getCustomer(){

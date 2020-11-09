@@ -13,15 +13,18 @@ public class Account extends myObject{
     protected ArrayList<Order> ordersList;
     protected ArrayList<Payment> paymentsList;
 
-    public Account(String id, String billing_address, boolean is_closed, int balance) {
+    public Account(String id, ShoppingCart cart, String billing_address, boolean is_closed, int balance) {
         this.id = id;
         this.billing_address = billing_address;
         this.is_closed = is_closed;
         this.open = new Date();
         this.closed = null;
         this.balance = balance;
+        this.shoppingCart = cart;
         this.ordersList = new ArrayList<>();
         this.paymentsList = new ArrayList<>();
+        shoppingCart.setAccount(this);
+        main.addToObjects(id, this);
     }
 
     public void addOrder(Order newOrder){

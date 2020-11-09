@@ -6,11 +6,14 @@ public class Customer extends myObject{
     private Web_User web_user;
     private Account account;
 
-    public Customer(String id, Address address, String phone, String email) {
+    public Customer(String id, Address address, String phone, String email, Account account) {
         this.id = id;
         this.address = address;
         this.phone = phone;
         this.email = email;
+        this.account = account;
+        account.setCustomer(this);
+        main.addToObjects(id, this);
     }
 
     public String getId() {
@@ -55,10 +58,6 @@ public class Customer extends myObject{
 
     public Account getAccount() {
         return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
     @Override

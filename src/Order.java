@@ -20,6 +20,7 @@ public class Order extends myObject{
         this.status = OrderStatus.New;
         lineItemList = new ArrayList<>();
         paymentsList = new ArrayList<>();
+        main.addToObjects(number, this);
     }
 
     public void setShipped(Date shipped) {

@@ -12,6 +12,8 @@ public class Product extends myObject{
         this.mySupplier = mySupplier;
         this.price = price;
         this.premiumAccount = null;
+        main.addToObjects(id, this);
+        main.addToProduct(id, this);
     }
 
     public void updateSupplier(Supplier newSupplier) {

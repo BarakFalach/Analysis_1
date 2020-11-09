@@ -81,27 +81,26 @@ public class main {
                 System.out.println("Please Enter account balnace:");
                 String balance = scan.nextLine();
                 System.out.println("Is this a Premium account?[y/n]");
+
                 Web_User user = new Web_User(id,pass,UserState.New);
-                objects.put(user.getId(), user);
+                //objects.put(user.getId(), user);
+                ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(), user);
+
                 Account account;
-                ShoppingCart shoppingCart;
                 String toPrint ="";
                 if(scan.nextLine().equals("y")){
-                    account = new PremiumAccount(IDGenerate(),billing_address,false,Integer.parseInt(balance));
+                    account = new PremiumAccount(IDGenerate(), shoppingCart, billing_address,false,Integer.parseInt(balance));
                     toPrint = toPrint.concat("Premium user added");
                 }
                 else {
-                    account = new Account(IDGenerate(), billing_address, false, Integer.parseInt(balance));
+                    account = new Account(IDGenerate(), shoppingCart,billing_address, false, Integer.parseInt(balance));
                     toPrint = toPrint.concat("Regular user added");
                 }
-                Customer customer = new Customer(IDGenerate(),new Address(city,street,Integer.parseInt(number)),phone,email);
-                objects.put(customer.getId(),customer);
-                objects.put(account.getId(), account);
-                customer.setAccount(account);
-                account.setCustomer(customer);//TODO:: Understand the set customer stuff
+                Customer customer = new Customer(IDGenerate(),new Address(city,street,Integer.parseInt(number)),phone,email, account);
+                //objects.put(customer.getId(),customer);
+                //objects.put(account.getId(), account);
                 user.setCustomer(customer);
-                shoppingCart = new ShoppingCart(IDGenerate(),account.getOpen(),account);
-                objects.put(shoppingCart.getId(),shoppingCart);
+                //objects.put(shoppingCart.getId(),shoppingCart);
                 //accounts.add(account);
                 //web_users.add(user);
                 System.out.println(toPrint);
@@ -223,8 +222,8 @@ public class main {
                 } while (trueSupplier);
 
                 Product newProduct = new Product(id,name,mySupplier, Integer.parseInt(price));
-                products.put(id, newProduct);
-                objects.put(id, newProduct);
+                //products.put(id, newProduct);
+                //objects.put(id, newProduct);
                 mySupplier.addProduct(newProduct);
                 addedProduct = false;
                 System.out.printf("\t Product %s was added!%n", id);
@@ -292,7 +291,7 @@ public class main {
         LineItem curLineItem;
 
         Order newOrder = new Order(IDGenerate(),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
-        objects.put(newOrder.getId(),newOrder);
+        //objects.put(newOrder.getId(),newOrder);
         newOrder.setMyAccount(curAccount);
         curAccount.addOrder(newOrder);
         String input;
@@ -320,7 +319,7 @@ public class main {
                 System.out.println("Enter quantity");
                 quantity = scan.nextLine();
                 curLineItem = new LineItem(IDGenerate(),Integer.parseInt(quantity),newOrder,curProduct);
-                objects.put(curLineItem.getId(),curLineItem);
+                //objects.put(curLineItem.getId(),curLineItem);
                 newOrder.addLineItem(curLineItem); //TODO:: add ID for everyObject
                 curAccount.getShoppingCart().addLineItem(curLineItem);
                 System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? y/n");
@@ -343,7 +342,7 @@ public class main {
                     curAccount.addPayment(p);
                     newOrder.addPayment(p);
                     p.setPaid(new Date());
-                    objects.put(p.getId(),p);
+                    //objects.put(p.getId(),p);
                     break;
             }
             System.out.println("You Order has Been PLaced");
@@ -375,40 +374,44 @@ public class main {
         } while (!flag);
     }
 
+    /** add to list\map */
+
+    public static void addToObjects(String id ,myObject object){
+        if(!objects.containsKey(id))
+            objects.put(id, object);
+    }
+
+    public static void addToProduct(String id, Product product){
+        if(!products.containsKey(id))
+            products.put(id, product);
+    }
+
+    public static void addToSupplier(Supplier supplier){
+        if(!suppliers.contains(supplier))
+            suppliers.add(supplier);
+    }
+
 
     /** everything else */
 
     private static void initiateSystem() {
         Address address = new Address("a","ads",4);
-        Supplier s = new Supplier("123", "moshe");
+        Supplier s = new Supplier(IDGenerate(), "moshe");
         Product p0 = new Product("Bamba", "Bamba", s, 10);
         Product p1 = new Product("Ramen", "Ramen", s, 20);
-        Web_User user = new Web_User("000","000",UserState.New);
-        objects.put("000",user);
-        Customer customer = new Customer(IDGenerate(),new Address("Tel-Aviv","Jaffa",100),"100","Almoni@gmail.com");
-        objects.put(customer.getId(),customer);
-        Account a = new PremiumAccount(IDGenerate(),"a",false,100);
-        objects.put(a.getId(),a);
-        System.out.println(a.getId());
-        customer.setAccount(a);
-        customer.setWeb_user(user);
-        a.setCustomer(customer);
+        Web_User user = new Web_User(IDGenerate(),"000",UserState.New);
+
+        ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(), user);
+        Account account = new PremiumAccount(IDGenerate(), shoppingCart,"a",false,100);
+        Customer customer = new Customer(IDGenerate(),new Address("Tel-Aviv","Jaffa",100),"100","Almoni@gmail.com", account);
         user.setCustomer(customer);
-        ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
-        shoppingCart.setWeb_user(user);
-        user.setShoppingCart(shoppingCart);
-        objects.put(shoppingCart.getId(),shoppingCart);
-
-        Customer c = new Customer(IDGenerate(),address,"123","bb");
-        objects.put(c.getId(),c);
-
 
         p0.updateSupplier(s);
         p1.updateSupplier(s);
         s.addProduct(p0);
         s.addProduct(p1);
-        a.setShoppingCart(shoppingCart);
 
+        /**
         suppliers.add(s);
         products.put(p0.getId(), p0);
         products.put(p1.getId(), p1);
@@ -417,6 +420,7 @@ public class main {
         objects.put(p1.getId(), p1);
         objects.put(a.getId(),a);
         objects.put(c.getId(),c);
+         */
     }
 
     public static String IDGenerate(){
@@ -481,4 +485,6 @@ public class main {
 
 
     }
+
+
 }

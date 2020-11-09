@@ -5,8 +5,8 @@ public class PremiumAccount extends  Account {
 
     ArrayList<Product> productList = new ArrayList<>();
 
-    public PremiumAccount(String id, String billing_address, boolean is_closed, int balance) {
-        super(id, billing_address, is_closed, balance);
+    public PremiumAccount(String id, ShoppingCart cart,String billing_address, boolean is_closed, int balance) {
+        super(id, cart, billing_address, is_closed, balance);
     }
 
     public void addProduct(Product newProduct)
