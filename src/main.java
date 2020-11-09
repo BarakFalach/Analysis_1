@@ -4,10 +4,9 @@ import java.util.*;
 
 public class main {
 
-    //private static ArrayList<Web_User> web_users = new ArrayList<>();
+    private static Map<String, Product> products = new Hashtable<>();
     private static ArrayList<Supplier> suppliers = new ArrayList<>();
-    //private static ArrayList<Product> products = new ArrayList<>();
-    //private static ArrayList<Account> accounts = new ArrayList<>(); // TODO:: remmber to add accounts to this list
+
     private static int GlobalSerialNumber = 0 ;
     private static Map<String, myObject> objects = new Hashtable<>();
 
@@ -55,6 +54,7 @@ public class main {
         } while (!choice.equals("9")); // end of loop
     }
 
+    /** Web User */
     public static void add_WebUser(Scanner scan){
         boolean addeduser = true;
         while(addeduser) {
@@ -82,20 +82,21 @@ public class main {
                 String balance = scan.nextLine();
                 System.out.println("Is this a Premium account?[y/n]");
                 Web_User user = new Web_User(id,pass,UserState.New);
+                objects.put(user.getId(), user);
                 Account account;
                 ShoppingCart shoppingCart;
                 String toPrint ="";
                 if(scan.nextLine().equals("y")){
-                    account = new PremiumAccount(id,billing_address,false,Integer.parseInt(balance));
+                    account = new PremiumAccount(IDGenerate(),billing_address,false,Integer.parseInt(balance));
                     toPrint = toPrint.concat("Premium user added");
                 }
                 else {
-                    account = new Account(id, billing_address, false, Integer.parseInt(balance));
+                    account = new Account(IDGenerate(), billing_address, false, Integer.parseInt(balance));
                     toPrint = toPrint.concat("Regular user added");
                 }
                 Customer customer = new Customer(IDGenerate(),new Address(city,street,Integer.parseInt(number)),phone,email);
                 objects.put(customer.getId(),customer);
-                objects.put(id,account);
+                objects.put(account.getId(), account);
                 customer.setAccount(account);
                 account.setCustomer(customer);//TODO:: Understand the set customer stuff
                 user.setCustomer(customer);
@@ -121,116 +122,12 @@ public class main {
                 removeduser = false;
             }
             else {
-                System.out.println("User "+id+" dosen't exist please try again");
+                System.out.println("User "+id+" doesn't exist please try again");
                 System.out.println("do you want to try again? [y/n]");
                 String again = scan.nextLine();
                 if(again.equals("n")) removeduser = false;
             }
         }
-    }
-
-    public static void add_Product(Scanner scan){
-        boolean addedProduct = true;
-        boolean trueSupplier = true;
-        Supplier mySupplier = null;
-        String price = "";
-        while(addedProduct) {
-            System.out.println("Please Enter id of the new Product:");
-            String id = scan.nextLine();
-            if(objects.containsKey(id)){
-                System.out.println("Product Already exist please enter another id");
-            }
-            else {
-                System.out.println("Please insert name to product "+ id + " :");
-                String name = scan.nextLine();
-                System.out.println("Please insert supplier to product "+ id + " :");
-                do {
-                    String supplier = scan.nextLine();
-                    if(!objects.containsKey(supplier))
-                        System.out.println("no such a supplier, please insert another id");
-                    else {
-                        mySupplier = (Supplier) objects.get(supplier);
-                        trueSupplier = false;
-                        System.out.println("Please insert price to product "+ id + " :");
-                        price = scan.nextLine();
-                    }
-                } while (trueSupplier);
-
-                Product newProduct = new Product(id,name,mySupplier, Integer.parseInt(price));
-                //products.add(newProduct);
-                objects.put(id, newProduct);
-                mySupplier.addProduct(newProduct);
-                addedProduct = false;
-                System.out.printf("\t Product %s was added!%n", id);
-            }
-        }
-    }
-
-    public static void delete_Product(Scanner scan){
-        boolean removedProduct = true;
-        while(removedProduct) {
-            System.out.println("Please product id to remove:");
-            String id = scan.nextLine();
-            if(objects.containsKey(id)){
-                Product toRemove = (Product) objects.get(id);
-                toRemove.getMySupplier().removeProduct(toRemove);
-                //products.remove(toRemove);
-                objects.remove(id);
-                System.out.printf("\t product %s Removed!%n", id);
-                removedProduct = false;
-            }
-            else {
-                System.out.printf("Product %s doesn't exist please try again%n", id);
-                System.out.println("do you want to try again? [y/n]");
-                String again = scan.nextLine();
-                if(again.equals("n")) removedProduct = false;
-            }
-        }
-    }
-
-    private static void initiateSystem() {
-        Address address = new Address("a","ads",4);
-        Supplier s = new Supplier("123", "moshe");
-        Product p0 = new Product("Bamba", "Bamba", s, 10);
-        Product p1 = new Product("Ramen", "Ramen", s, 20);
-        Web_User user = new Web_User("000","000",UserState.New);
-        objects.put("000",user);
-        Customer customer = new Customer(IDGenerate(),new Address("Tel-Aviv","Jaffa",100),"100","Almoni@gmail.com");
-        objects.put(customer.getId(),customer);
-        Account a = new Account(IDGenerate(),"a",false,100);
-        objects.put(a.getId(),a);
-        customer.setAccount(a);
-        customer.setWeb_user(user);
-        a.setCustomer(customer);
-        user.setCustomer(customer);
-        ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
-        shoppingCart.setWeb_user(user);
-        user.setShoppingCart(shoppingCart);
-        objects.put(shoppingCart.getId(),shoppingCart);
-
-        //accounts.add(a);
-        //web_users.add(user);
-
-        Customer c = new Customer(IDGenerate(),address,"123","bb");
-        objects.put(c.getId(),c);
-
-
-        p0.updateSupplier(s);
-        p1.updateSupplier(s);
-        s.addProduct(p0);
-        s.addProduct(p1);
-        a.setShoppingCart(shoppingCart);
-        //accounts.add(a);
-
-        //suppliers.add(s);
-        //products.add(p0);
-        //products.add(p1);
-        suppliers.add(s);
-        objects.put(s.getId(), s);
-        objects.put(p0.getId(), p0);
-        objects.put(p1.getId(), p1);
-        objects.put(a.getId(),a);
-        objects.put(c.getId(),c);
     }
 
     public static void login_WebUser(Scanner scan) {
@@ -252,7 +149,7 @@ public class main {
                         System.out.println("1\t Make order");
                         System.out.println("2\t Display order");
                         System.out.println("3\t Link Product");
-                        System.out.println("4\t Logout");
+                        System.out.println("4\t Logout WebUser");
                         String choice = scan.nextLine();
                         switch (choice) {
                             case "1": //Make Order
@@ -283,30 +180,6 @@ public class main {
         }
     }
 
-    private static void DisplayOrder(Scanner scan, String id) {
-        System.out.println(((Web_User)objects.get(id)).getCustomer().getAccount().getLastOrder());
-    }
-
-    private static void LinkProduct(Scanner scan, String id) {
-        if(objects.get(id).getClass().getSimpleName() == "PremiumAccount"){
-            System.out.println("Enter a product ID that you would like to connect");
-            String productid = scan.nextLine();
-            if(objects.containsKey(productid)){
-                ((Product)objects.get(productid)).setPremiumAccount((PremiumAccount)objects.get(id));
-                System.out.println("Enter price for product "+ productid);
-                String newPrice = scan.nextLine();
-                ((Product)objects.get(productid)).setPrice(Integer.parseInt(newPrice));
-                System.out.println("Product price update successfully");
-            }
-            else{
-                System.out.println("Wrong product ID");
-            }
-        }
-        else{
-            System.out.println("This function is available only for Premium Accounts");
-        }
-    }
-
     public static void logoutUser(String id){
         if(objects.containsKey(id)) {
             Web_User wu = (Web_User) objects.get(id);
@@ -320,31 +193,99 @@ public class main {
         }
     }
 
-    public static void showAllObjects(){
-        System.out.println("Showing All Objects:");
-        objects.forEach((k,v)-> {
-            System.out.println(objects.get(k).showShortObject());
-        });
-        System.out.println();
-    }
+    /** Product */
 
-    public static void showObject(Scanner scan){
-        boolean flag = false;
-        do {
-            System.out.println("Please enter object id to show:");
-            String searchId = scan.nextLine();
-            if(!objects.containsKey(searchId))
-                System.out.println("Object id doesn't exist, please insert another object id");
-            else {
-                System.out.println(objects.get(searchId).toString());
-                System.out.println();
-                flag = true;
+    public static void add_Product(Scanner scan){
+        boolean addedProduct = true;
+        boolean trueSupplier = true;
+        Supplier mySupplier = null;
+        String price = "";
+        while(addedProduct) {
+            System.out.println("Please Enter id of the new Product:");
+            String id = scan.nextLine();
+            if(objects.containsKey(id)){
+                System.out.println("Product Already exist please enter another id");
             }
-        } while (!flag);
+            else {
+                System.out.println("Please insert name to product "+ id + " :");
+                String name = scan.nextLine();
+                System.out.println("Please insert supplier to product "+ id + " :");
+                do {
+                    String supplier = scan.nextLine();
+                    if(!objects.containsKey(supplier))
+                        System.out.println("no such a supplier, please insert another id");
+                    else {
+                        mySupplier = (Supplier) objects.get(supplier);
+                        trueSupplier = false;
+                        System.out.println("Please insert price to product "+ id + " :");
+                        price = scan.nextLine();
+                    }
+                } while (trueSupplier);
+
+                Product newProduct = new Product(id,name,mySupplier, Integer.parseInt(price));
+                products.put(id, newProduct);
+                objects.put(id, newProduct);
+                mySupplier.addProduct(newProduct);
+                addedProduct = false;
+                System.out.printf("\t Product %s was added!%n", id);
+            }
+        }
     }
 
-    public static void MakeOrder(Scanner scan,String accountID) //TODO:: function isn't complete
-    {
+    public static void delete_Product(Scanner scan){
+        boolean removedProduct = true;
+        while(removedProduct) {
+            System.out.println("Please product id to remove:");
+            String id = scan.nextLine();
+            if(objects.containsKey(id)){
+                Product toRemove = (Product) objects.get(id);
+                toRemove.getMySupplier().removeProduct(toRemove);
+                //products.remove(toRemove);
+                objects.remove(id);
+                System.out.printf("\t product %s Removed!%n", id);
+                removedProduct = false;
+            }
+            else {
+                System.out.printf("Product %s doesn't exist please try again%n", id);
+                System.out.println("do you want to try again? [y/n]");
+                String again = scan.nextLine();
+                if(again.equals("n")) removedProduct = false;
+            }
+        }
+    }
+
+    private static void LinkProduct(Scanner scan, String id) {
+        if(!objects.get(id).getClassName().equals("WebUser"))
+            return;
+        if(((Web_User)objects.get(id)).getCustomer().getAccount().getClass().getSimpleName().equals("PremiumAccount")){
+            System.out.println("Enter a product ID that you would like to connect");
+            String productid = scan.nextLine();
+            if(products.containsKey(productid)){
+                products.get(productid).setPremiumAccount((PremiumAccount)((Web_User)objects.get(id)).getCustomer().getAccount());
+                System.out.println("Enter price for product "+ productid);
+                String newPrice = scan.nextLine();
+                products.get(productid).setPrice(Integer.parseInt(newPrice));
+                System.out.println("Enter quantity for product "+ productid);
+                String quantity = scan.nextLine();
+                products.get(productid).setQuantity(Integer.parseInt(quantity));
+                System.out.println("Product price update successfully");
+            }
+            else{
+                System.out.println("Wrong product ID");
+            }
+        }
+        else{
+            System.out.println("This function is available only for Premium Accounts");
+        }
+    }
+
+    /** Order */
+
+    private static void DisplayOrder(Scanner scan, String id) {
+        System.out.println(((Web_User)objects.get(id)).getCustomer().getAccount().getLastOrder());
+    }
+
+    public static void MakeOrder(Scanner scan,String accountID) { //TODO:: function isn't complete
         Account curAccount = ((Web_User) objects.get(accountID)).getCustomer().getAccount();
         Supplier curSupplier;
         Product curProduct;
@@ -359,11 +300,11 @@ public class main {
         boolean moreProducts = true;
         boolean PlacingOrder = true;
         while (PlacingOrder){
-            System.out.println("Enter Supplier Name:");
+            System.out.println("Enter Supplier/Premium account name:");
             input = scan.nextLine();
             curSupplier = getSupplierByName(input);
             if (curSupplier==null) {
-                System.out.println("Supplier Doesn't exist");
+                System.out.println("Supplier/Premium account Doesn't exist");
                 continue;
             }
             PlacingOrder=false;
@@ -394,7 +335,7 @@ public class main {
             System.out.println("2\t ImmeditaePayment");
             String paymethod = scan.nextLine();
             switch (paymethod){
-                case "1": //TODO: make options to delayed payments
+                case "1":
                     createDelayedPayment(newOrder,curAccount,scan);
                     break;
                 case "2":
@@ -406,17 +347,76 @@ public class main {
                     break;
             }
             System.out.println("You Order has Been PLaced");
-
         }
     }
 
+    /** Show Objects */
 
-    public static Supplier getSupplierByName(String curSupplierName){
-        for (Supplier supplier : suppliers) {
-            if (supplier.getName().equals(curSupplierName))
-                return supplier;
-        }
-        return null;
+    public static void showAllObjects(){
+        System.out.println("Showing All Objects:");
+        objects.forEach((k,v)-> {
+            System.out.println(objects.get(k).showShortObject());
+        });
+        System.out.println();
+    }
+
+    public static void showObject(Scanner scan){
+        boolean flag = false;
+        do {
+            System.out.println("Please enter object id to show:");
+            String searchId = scan.nextLine();
+            if(!objects.containsKey(searchId))
+                System.out.println("Object id doesn't exist, please insert another object id");
+            else {
+                System.out.println(objects.get(searchId).toString());
+                System.out.println();
+                flag = true;
+            }
+        } while (!flag);
+    }
+
+
+    /** everything else */
+
+    private static void initiateSystem() {
+        Address address = new Address("a","ads",4);
+        Supplier s = new Supplier("123", "moshe");
+        Product p0 = new Product("Bamba", "Bamba", s, 10);
+        Product p1 = new Product("Ramen", "Ramen", s, 20);
+        Web_User user = new Web_User("000","000",UserState.New);
+        objects.put("000",user);
+        Customer customer = new Customer(IDGenerate(),new Address("Tel-Aviv","Jaffa",100),"100","Almoni@gmail.com");
+        objects.put(customer.getId(),customer);
+        Account a = new PremiumAccount(IDGenerate(),"a",false,100);
+        objects.put(a.getId(),a);
+        System.out.println(a.getId());
+        customer.setAccount(a);
+        customer.setWeb_user(user);
+        a.setCustomer(customer);
+        user.setCustomer(customer);
+        ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(),a.getOpen(),a);
+        shoppingCart.setWeb_user(user);
+        user.setShoppingCart(shoppingCart);
+        objects.put(shoppingCart.getId(),shoppingCart);
+
+        Customer c = new Customer(IDGenerate(),address,"123","bb");
+        objects.put(c.getId(),c);
+
+
+        p0.updateSupplier(s);
+        p1.updateSupplier(s);
+        s.addProduct(p0);
+        s.addProduct(p1);
+        a.setShoppingCart(shoppingCart);
+
+        suppliers.add(s);
+        products.put(p0.getId(), p0);
+        products.put(p1.getId(), p1);
+        objects.put(s.getId(), s);
+        objects.put(p0.getId(), p0);
+        objects.put(p1.getId(), p1);
+        objects.put(a.getId(),a);
+        objects.put(c.getId(),c);
     }
 
     public static String IDGenerate(){
@@ -448,6 +448,14 @@ public class main {
         return id;
     }
 
+    public static Supplier getSupplierByName(String curSupplierName){
+        for (Supplier supplier : suppliers) {
+            if (supplier.getName().equals(curSupplierName))
+                return supplier;
+        }
+        return null;
+    }
+
     public static void createDelayedPayment(Order newOrder,Account curAccount,Scanner scan){
 
         Date testD = new Date();
@@ -473,6 +481,4 @@ public class main {
 
 
     }
-
-
 }
