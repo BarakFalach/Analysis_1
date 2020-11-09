@@ -255,27 +255,41 @@ public class main {
     private static void LinkProduct(Scanner scan, String id) {
         //if(!objects.get(id).getClassName().equals("WebUser"))
         //    return;
+        PremiumAccount curPremiumAcoount;
+        Product curProduct;
+        boolean hasNoAccount = true;
         if(((Web_User)objects.get(id)).getCustomer().getAccount().getClass().getSimpleName().equals("PremiumAccount")){
-            System.out.println("Enter a product name that you would like to connect");
-            String productName = scan.nextLine();
-            if(products.containsKey(productName)){
-                products.get(productName).setPremiumAccount((PremiumAccount)((Web_User)objects.get(id)).getCustomer().getAccount());
-                System.out.println("Enter price for product "+ productName);
-                String newPrice = scan.nextLine();
-                products.get(productName).setPrice(Integer.parseInt(newPrice));
-                System.out.println("Enter quantity for product "+ productName);
-                String quantity = scan.nextLine();
-                products.get(productName).setQuantity(Integer.parseInt(quantity));
-                System.out.println("Product update successfully");
-            }
-            else{
-                System.out.println("Wrong product name");
+            curPremiumAcoount=(PremiumAccount)(((Web_User)objects.get(id)).getCustomer().getAccount());
+            System.out.println(products.toString());
+            while(hasNoAccount){
+                System.out.println("Enter a product name that you would like to connect");
+                String productid = scan.nextLine();
+                if(products.containsKey(productid)){
+                    curProduct = products.get(productid);
+                    if (curProduct.getPremiumAccount()!=null){
+                        System.out.println("This product already have account");
+                        continue;}
+                    hasNoAccount=false;
+                    curProduct.setPremiumAccount(curPremiumAcoount);
+                    System.out.println("Enter price for product "+ productid);
+                    String newPrice = scan.nextLine();
+                    curProduct.setPrice(Integer.parseInt(newPrice));
+                    System.out.println("Enter quantity for product "+ productid);
+                    String quantity = scan.nextLine();
+                    curProduct.setQuantity(Integer.parseInt(quantity));
+                    System.out.println("Product update successfully");
+                }
+
+                else{
+                    System.out.println("Wrong product ID");
+                }
             }
         }
         else{
             System.out.println("This function is available only for Premium Accounts");
         }
     }
+
 
     /** Order */
 
@@ -288,6 +302,7 @@ public class main {
         myObject object = null;
         Product curProduct;
         LineItem curLineItem;
+        Supplier curSupplier = new Supplier("42","42");
 
         Order newOrder = new Order(IDGenerate(),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
         newOrder.setMyAccount(curAccount);

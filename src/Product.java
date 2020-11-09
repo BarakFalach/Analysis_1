@@ -51,6 +51,10 @@ public class Product extends myObject{
         this.premiumAccount = premiumAccount;
     }
 
+    public PremiumAccount getPremiumAccount() {
+        return premiumAccount;
+    }
+
     public void removeLineItem(LineItem item){
         lineItems.remove(item);
     }
