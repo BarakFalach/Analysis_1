@@ -20,6 +20,10 @@ public class Customer extends myObject{
         return id;
 }
 
+    public String getName() {
+        return getId();
+    }
+
     public void setId(String id) {
         this.id = id;
     }

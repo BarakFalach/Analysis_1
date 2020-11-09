@@ -27,8 +27,13 @@ public class LineItem extends myObject{
     public int getPrice() {
         return price;
     }
+
     public String getId(){
         return this.ID;
+    }
+
+    public String getName() {
+        return getId();
     }
 
 }

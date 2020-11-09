@@ -20,6 +20,7 @@ public class Supplier extends myObject{
         return id;
     }
 
+
     public void removeProduct(Product productToDelete)
     {
         productList.remove(productToDelete);

@@ -24,6 +24,11 @@ public class Order extends myObject{
         main.addToObjects(this);
     }
 
+
+    public String getName() {
+        return getId();
+    }
+
     public void setShipped(Date shipped) {
         this.shipped = shipped;
     }

@@ -234,17 +234,17 @@ public class main {
     public static void delete_Product(Scanner scan){
         boolean removedProduct = true;
         while(removedProduct) {
-            System.out.println("Please product name to remove:");
-            String id = scan.nextLine();
-            if(objects.containsKey(id)){
-                Product toRemove = (Product) objects.get(id);
+            System.out.println("Please insert product name to remove:");
+            String name = scan.nextLine();
+            if(products.containsKey(name)){
+                Product toRemove = products.get(name);
                 toRemove.getMySupplier().removeProduct(toRemove);
                 toRemove.deleteObject();
-                System.out.printf("\t product %s Removed!%n", id);
+                System.out.printf("\t product %s Removed!%n", name);
                 removedProduct = false;
             }
             else {
-                System.out.printf("Product %s doesn't exist please try again%n", id);
+                System.out.printf("Product %s doesn't exist please try again%n", name);
                 System.out.println("do you want to try again? [y/n]");
                 String again = scan.nextLine();
                 if(again.equals("n")) removedProduct = false;
@@ -257,19 +257,19 @@ public class main {
         //    return;
         if(((Web_User)objects.get(id)).getCustomer().getAccount().getClass().getSimpleName().equals("PremiumAccount")){
             System.out.println("Enter a product name that you would like to connect");
-            String productid = scan.nextLine();
-            if(products.containsKey(productid)){
-                products.get(productid).setPremiumAccount((PremiumAccount)((Web_User)objects.get(id)).getCustomer().getAccount());
-                System.out.println("Enter price for product "+ productid);
+            String productName = scan.nextLine();
+            if(products.containsKey(productName)){
+                products.get(productName).setPremiumAccount((PremiumAccount)((Web_User)objects.get(id)).getCustomer().getAccount());
+                System.out.println("Enter price for product "+ productName);
                 String newPrice = scan.nextLine();
-                products.get(productid).setPrice(Integer.parseInt(newPrice));
-                System.out.println("Enter quantity for product "+ productid);
+                products.get(productName).setPrice(Integer.parseInt(newPrice));
+                System.out.println("Enter quantity for product "+ productName);
                 String quantity = scan.nextLine();
-                products.get(productid).setQuantity(Integer.parseInt(quantity));
+                products.get(productName).setQuantity(Integer.parseInt(quantity));
                 System.out.println("Product update successfully");
             }
             else{
-                System.out.println("Wrong product ID");
+                System.out.println("Wrong product name");
             }
         }
         else{
@@ -380,7 +380,7 @@ public class main {
             objects.put(object.getId(), object);
 
         if (object.getClassName().equals("Product"))
-            products.put(object.getClassName(), (Product)object);
+            products.put(object.getName(), (Product)object);
 
         if (object.getClassName().equals("Supplier"))
             suppliers.add((Supplier)object);

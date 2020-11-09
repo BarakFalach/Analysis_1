@@ -39,6 +39,12 @@ public class Account extends myObject{
         return id;
     }
 
+    @Override
+    public String getName() {
+        return getId();
+    }
+
+
     public void setId(String id) {
         this.id = id;
     }
@@ -104,11 +110,6 @@ public class Account extends myObject{
             return "No order to show";
         return ordersList.get(ordersList.size()-1).toString();
     }
-
-//    @Override
-//    public void deleteObject() {
-//
-//    }
 
     @Override
     public String toString() {

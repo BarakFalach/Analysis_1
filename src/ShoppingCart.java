@@ -17,6 +17,10 @@ public class ShoppingCart extends myObject {
         main.addToObjects(this);
     }
 
+    public String getName() {
+        return getId();
+    }
+
     public Date getCreated() {
         return this.created;
     }

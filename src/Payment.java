@@ -22,6 +22,11 @@ public abstract class Payment extends myObject{
         return id;
     }
 
+
+    public String getName() {
+        return getId();
+    }
+
     public void setPaid(Date paid) {
         this.paid = paid;
     }

@@ -12,6 +12,11 @@ public class Web_User extends myObject{
         main.addToObjects(this);
     }
 
+
+    public String getName() {
+        return getId();
+    }
+
     public String getPassword() {
         return password;
     }
