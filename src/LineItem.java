@@ -23,4 +23,8 @@ public class LineItem extends myObject{
         return this.ID;
     }
 
+    @Override
+    public void deleteObject() {
+
+    }
 }

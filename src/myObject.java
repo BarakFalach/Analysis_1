@@ -4,4 +4,5 @@ public abstract class myObject {
     }
     public String getClassName(){return getClass().getSimpleName();};
     public abstract String getId();
+    public abstract void deleteObject();
 }

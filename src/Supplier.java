@@ -51,4 +51,8 @@ public class Supplier extends myObject{
                 '}';
     }
 
+    @Override
+    public void deleteObject() {
+
+    }
 }

@@ -57,4 +57,8 @@ public class Product extends myObject{
         return id;
     }
 
+    @Override
+    public void deleteObject() {
+
+    }
 }

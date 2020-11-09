@@ -7,4 +7,9 @@ public class ImmediatePayment extends Payment {
     public boolean isPhoneConfirmation() {
         return phoneConfirmation;
     }
+
+    @Override
+    public void deleteObject() {
+
+    }
 }

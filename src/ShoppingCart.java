@@ -51,12 +51,25 @@ public class ShoppingCart extends myObject {
 
     @Override
     public String toString() {
-        return "ShoppingCart{" +
+        StringBuilder toPrint = new StringBuilder("ShoppingCart{" +
                 "created=" + created +
                 ", id='" + id + '\'' +
                 ", account=" + account.getId() +
-                ", web_user=" + web_user.getId() +
-                ", lineItemList=" + lineItemList.toString() +
-                '}';
+                ", web_user=" + web_user.getId());
+        toPrint.append("lineItems=");
+        for (LineItem lineItem : lineItemList){
+            toPrint.append(lineItem.getId());
+        }
+        toPrint.append('}');
+        return toPrint.toString();
+    }
+
+    public void removeLineItem(LineItem lineItem){
+        this.lineItemList.remove(lineItem);
+    }
+
+    @Override
+    public void deleteObject() {
+
     }
 }

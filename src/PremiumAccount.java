@@ -24,12 +24,13 @@ public class PremiumAccount extends  Account {
 
     public String toString(){
         StringBuilder res = new StringBuilder(
-                "PremiumAccount ID: " + '\n' +
+                "PremiumAccount ID: " +this.id+ '\n' +
                         "PremiumAccount Products:" + '\n');
         for (Product product : productList) {
             res.append(product.toString());
             res.append('\n');
         }
+        res.append(super.toString());
         return res.toString();
     }
 }

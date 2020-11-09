@@ -71,4 +71,9 @@ public class Customer extends myObject{
                 ", account=" + account.getId() +
                 '}';
     }
+
+    @Override
+    public void deleteObject() {
+        account.deleteObject();
+    }
 }

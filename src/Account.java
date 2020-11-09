@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Account extends myObject{
+
     protected String id;
     protected String billing_address;
     protected boolean is_closed;
@@ -104,19 +105,41 @@ public class Account extends myObject{
         return ordersList.get(ordersList.size()-1).toString();
     }
 
+//    @Override
+//    public void deleteObject() {
+//
+//    }
+
     @Override
     public String toString() {
-        return "Account{" +
+        StringBuilder toPrint = new StringBuilder();
+        toPrint = new StringBuilder("Account{" +
                 "id='" + id + '\'' +
                 ", billing_address='" + billing_address + '\'' +
                 ", is_closed=" + is_closed +
-                ", open=" + open +
-                ", closed=" + (closed!=null? closed.toString(): "open") +
+                ", open=" + open.toString() +
+                ", closed=" + (closed != null ? closed.toString() : "open") +
                 ", balance=" + balance +
                 ", shoppingCart=" + shoppingCart.getId() +
-                ", customer=" + customer.getId() +
-                ", ordersList=" + ordersList.toString() +
-                ", paymentsList=" + paymentsList.toString() +
-                '}';
+                ", customer=" + customer.getId());
+        toPrint.append(", orders=");
+        for (Order order : this.ordersList) {
+            toPrint.append(order.getId()).append(" ");
+        }
+        toPrint.append(", payments=");
+        for (Payment payment : this.paymentsList) {
+            toPrint.append(payment.getId()).append(" ");
+        }
+        return toPrint.toString();
+    }
+
+    @Override
+    public void deleteObject() {
+        for(Payment payment: paymentsList) {
+            payment.deleteObject();
+        }
+        for(Order order: ordersList){
+            order.deleteObject();
+        }
     }
 }

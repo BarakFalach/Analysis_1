@@ -10,4 +10,9 @@ public class DelayedPayment extends Payment {
     public Date getPaymentDate() {
         return paymentDate;
     }
+
+    @Override
+    public void deleteObject() {
+
+    }
 }

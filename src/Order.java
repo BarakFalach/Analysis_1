@@ -13,6 +13,7 @@ public class Order extends myObject{
     private Account myAccount;
 
     public Order(String number, Date ordered, Account myAccount) {
+        myAccount.addOrder(this);
         this.myAccount = myAccount;
         this.number = number;
         this.ordered = ordered;
@@ -50,17 +51,24 @@ public class Order extends myObject{
 
     @Override
     public String toString() {
-        return "Order{" +
+        StringBuilder toPrint = new StringBuilder("Order{" +
                 "number='" + number + '\'' +
                 ", ordered=" + ordered +
                 ", shipped=" + shipped +
                 ", ship_to=" + ship_to +
                 ", status=" + status +
                 ", total=" + total +
-                ", lineItemList=" + lineItemList.toString() +
-                ", paymentsList=" + paymentsList.toString() +
-                ", myAccount=" + myAccount.getId() +
-                '}';
+                ", myAccount=" + myAccount.getId());
+        toPrint.append("lineItems=");
+        for (LineItem lineItem : lineItemList){
+            toPrint.append(lineItem.getId());
+        }
+        toPrint.append(", payments=");
+        for (Payment payment:this.paymentsList){
+            toPrint.append(payment.getId()).append(" ");
+        }
+        toPrint.append("}");
+        return toPrint.toString();
     }
 
     @Override
@@ -70,6 +78,15 @@ public class Order extends myObject{
 
     public float getTotal() {
         return total;
+    }
+
+    @Override
+    public void deleteObject() {
+
+    }
+
+    public void removeLineItem(LineItem lineItem){
+        lineItemList.remove(lineItem);
     }
 }
 

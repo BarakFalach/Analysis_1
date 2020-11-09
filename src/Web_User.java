@@ -54,4 +54,10 @@ public class Web_User extends myObject{
                 ", shoppingCart=" + shoppingCart.getId() +
                 '}';
     }
+    @Override
+    public void deleteObject() {
+        shoppingCart.deleteObject();
+        customer.deleteObject();
+
+    }
 }
