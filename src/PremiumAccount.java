@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
-public class PremiumAccount extends  Account {
+public class PremiumAccount extends Account implements productHolder {
 
     ArrayList<Product> productList = new ArrayList<>();
 
@@ -32,5 +32,19 @@ public class PremiumAccount extends  Account {
         }
         res.append(super.toString());
         return res.toString();
+    }
+
+    @Override
+    public ArrayList<Product> getProducts() {
+        return this.productList;
+    }
+
+    @Override
+    public Product getProductByName(String name) {
+        for (Product product : productList){
+            if (product.getName().equals(name))
+                return product;
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 import com.sun.java.swing.plaf.windows.WindowsInternalFrameTitlePane;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.*;
 
 public class main {
@@ -12,7 +13,7 @@ public class main {
 
     public static void main(String[] args) {
 
-        initiateSystem();
+        //initiateSystem();
 
         String choice;
         Scanner scan = new Scanner(System.in);
@@ -139,6 +140,7 @@ public class main {
                 System.out.println("Please enter password for " + id + " :");
                 String pass = scan.nextLine();
                 if (((Web_User)objects.get(id)).getPassword().equals(pass)) {
+                    ((Web_User)objects.get(id)).setUserState(UserState.Active);
                     //new menu
                     // Make order
                     // Display order
@@ -185,6 +187,7 @@ public class main {
             wu.getCustomer().getAccount().setClosed(new Date());
             wu.getCustomer().getAccount().setIs_closed(true);
             wu.getCustomer().getAccount().setIs_closed(true);
+            wu.setUserState(UserState.Blocked);
             System.out.println("Logged Out!");
         }
         else {
@@ -268,7 +271,8 @@ public class main {
                     curProduct = products.get(productid);
                     if (curProduct.getPremiumAccount()!=null){
                         System.out.println("This product already have account");
-                        continue;}
+                        continue;
+                    }
                     hasNoAccount=false;
                     curProduct.setPremiumAccount(curPremiumAccoount);
                     curPremiumAccoount.addProduct(curProduct);
@@ -282,7 +286,7 @@ public class main {
                 }
 
                 else{
-                    System.out.println("Wrong product ID");
+                    System.out.println("Wrong product Name");
                 }
             }
         }
@@ -300,7 +304,7 @@ public class main {
 
     public static void MakeOrder(Scanner scan,String accountID) { //TODO:: function isn't complete
         Account curAccount = ((Web_User) objects.get(accountID)).getCustomer().getAccount();
-        myObject object = null;
+        productHolder object = null;
         Product curProduct;
         LineItem curLineItem;
         Supplier curSupplier = new Supplier("42","42");
@@ -326,9 +330,9 @@ public class main {
             PlacingOrder=false;
             while (moreProducts) {
                 System.out.println("Enter Product name from the Product List:");
-                System.out.println(object.getName());
+                System.out.println(object.getProducts().toString());
                 input = scan.nextLine();
-                curProduct = curSupplier.getProductByName(input);
+                curProduct = object.getProductByName(input);
                 if (curProduct==null){
                     System.out.println("Incorrect Product Name");
                     continue;
@@ -470,10 +474,10 @@ public class main {
         return null;
     }
 
-    public static Account getAccountByName(String curPremiumAccount){
+    public static PremiumAccount getAccountByName(String curPremiumAccount){
         for (String s : objects.keySet()) {
             if (objects.get(s).getClass().getSimpleName().equals("PremiumAccount") && s.equals(curPremiumAccount))
-                return (Account) objects.get(s);
+                return (PremiumAccount) objects.get(s);
         }
         return null;
     }

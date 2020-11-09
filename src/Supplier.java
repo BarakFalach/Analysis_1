@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Supplier extends myObject{
+public class Supplier extends myObject implements productHolder{
     private String id;
     private String name;
     private ArrayList<Product> productList;
@@ -30,6 +30,7 @@ public class Supplier extends myObject{
         return productList.indexOf(product);
     }
 
+    @Override
     public Product getProductByName(String name)
     {
         for (Product product : productList){
@@ -54,5 +55,10 @@ public class Supplier extends myObject{
     @Override
     public void deleteObject() {
 
+    }
+
+    @Override
+    public ArrayList<Product> getProducts() {
+        return this.productList;
     }
 }

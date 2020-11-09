@@ -57,6 +57,7 @@ public class Web_User extends myObject{
                 "login_id='" + login_id + '\'' +
                 ", customer=" + customer.getId() +
                 ", shoppingCart=" + shoppingCart.getId() +
+                ", userState=" + state.toString()+
                 '}';
     }
     @Override
