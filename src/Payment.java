@@ -14,6 +14,7 @@ public abstract class Payment extends myObject{
         this.myOrder = myOrder;
         this.total = myOrder.getTotal();
         this.myAccount = myAccount;
+        main.addToObjects(this);
     }
 
     @Override
@@ -39,5 +40,10 @@ public abstract class Payment extends myObject{
                 ", myOrder=" + myOrder.getId() +
                 ", myAccount=" + myAccount.getId() +
                 '}';
+    }
+
+    @Override
+    public void deleteObject(){
+        main.removeFromObjects(this);
     }
 }

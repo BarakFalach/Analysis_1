@@ -14,7 +14,7 @@ public class ShoppingCart extends myObject {
         this.created = new Date();
         this.lineItemList = new ArrayList<>();
         user.setShoppingCart(this);
-        main.addToObjects(id, this);
+        main.addToObjects(this);
     }
 
     public Date getCreated() {
@@ -70,6 +70,6 @@ public class ShoppingCart extends myObject {
 
     @Override
     public void deleteObject() {
-
+        main.removeFromObjects(this);
     }
 }

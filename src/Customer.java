@@ -13,7 +13,7 @@ public class Customer extends myObject{
         this.email = email;
         this.account = account;
         account.setCustomer(this);
-        main.addToObjects(id, this);
+        main.addToObjects(this);
     }
 
     public String getId() {
@@ -75,5 +75,6 @@ public class Customer extends myObject{
     @Override
     public void deleteObject() {
         account.deleteObject();
+        main.removeFromObjects(this);
     }
 }

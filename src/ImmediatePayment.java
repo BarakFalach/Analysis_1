@@ -8,8 +8,4 @@ public class ImmediatePayment extends Payment {
         return phoneConfirmation;
     }
 
-    @Override
-    public void deleteObject() {
-
-    }
 }

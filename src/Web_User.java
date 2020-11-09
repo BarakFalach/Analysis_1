@@ -9,7 +9,7 @@ public class Web_User extends myObject{
         this.login_id = id;
         this.password = pass;
         this.state = userState;
-        main.addToObjects(id, this);
+        main.addToObjects(this);
     }
 
     public String getPassword() {
@@ -56,8 +56,8 @@ public class Web_User extends myObject{
     }
     @Override
     public void deleteObject() {
-        shoppingCart.deleteObject();
         customer.deleteObject();
-
+        shoppingCart.deleteObject();
+        main.removeFromObjects(this);
     }
 }

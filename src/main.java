@@ -116,7 +116,7 @@ public class main {
             System.out.println("Please Enter id to remove:");
             String id = scan.nextLine();
             if(objects.containsKey(id)){
-                objects.remove(id);
+                objects.get(id).deleteObject();
                 System.out.println("\t User Removed!");
                 removeduser = false;
             }
@@ -234,13 +234,12 @@ public class main {
     public static void delete_Product(Scanner scan){
         boolean removedProduct = true;
         while(removedProduct) {
-            System.out.println("Please product id to remove:");
+            System.out.println("Please product name to remove:");
             String id = scan.nextLine();
             if(objects.containsKey(id)){
                 Product toRemove = (Product) objects.get(id);
                 toRemove.getMySupplier().removeProduct(toRemove);
-                //products.remove(toRemove);
-                objects.remove(id);
+                toRemove.deleteObject();
                 System.out.printf("\t product %s Removed!%n", id);
                 removedProduct = false;
             }
@@ -254,10 +253,10 @@ public class main {
     }
 
     private static void LinkProduct(Scanner scan, String id) {
-        if(!objects.get(id).getClassName().equals("WebUser"))
-            return;
+        //if(!objects.get(id).getClassName().equals("WebUser"))
+        //    return;
         if(((Web_User)objects.get(id)).getCustomer().getAccount().getClass().getSimpleName().equals("PremiumAccount")){
-            System.out.println("Enter a product ID that you would like to connect");
+            System.out.println("Enter a product name that you would like to connect");
             String productid = scan.nextLine();
             if(products.containsKey(productid)){
                 products.get(productid).setPremiumAccount((PremiumAccount)((Web_User)objects.get(id)).getCustomer().getAccount());
@@ -267,7 +266,7 @@ public class main {
                 System.out.println("Enter quantity for product "+ productid);
                 String quantity = scan.nextLine();
                 products.get(productid).setQuantity(Integer.parseInt(quantity));
-                System.out.println("Product price update successfully");
+                System.out.println("Product update successfully");
             }
             else{
                 System.out.println("Wrong product ID");
@@ -308,12 +307,12 @@ public class main {
             }
             PlacingOrder=false;
             while (moreProducts) {
-                System.out.println("Enter Product ID from the Product List:");
+                System.out.println("Enter Product name from the Product List:");
                 System.out.println(curSupplier);
                 input = scan.nextLine();
-                curProduct = curSupplier.getProductByID(input);
+                curProduct = curSupplier.getProductByName(input);
                 if (curProduct==null){
-                    System.out.println("Incorrect Product ID");
+                    System.out.println("Incorrect Product Name");
                     continue;
                 }
                 System.out.println("Enter quantity");
@@ -374,21 +373,26 @@ public class main {
         } while (!flag);
     }
 
-    /** add to list\map */
+    /** add, remove object to list */
 
-    public static void addToObjects(String id ,myObject object){
-        if(!objects.containsKey(id))
-            objects.put(id, object);
+    public static void addToObjects(myObject object){
+        if (!objects.containsKey(object.getId()))
+            objects.put(object.getId(), object);
+
+        if (object.getClassName().equals("Product"))
+            products.put(object.getClassName(), (Product)object);
+
+        if (object.getClassName().equals("Supplier"))
+            suppliers.add((Supplier)object);
     }
 
-    public static void addToProduct(String id, Product product){
-        if(!products.containsKey(id))
-            products.put(id, product);
-    }
+    public static void removeFromObjects(myObject object){
+        objects.remove(object.getId());
+        if (object.getClassName().equals("Product"))
+            products.remove(object.getId());
 
-    public static void addToSupplier(Supplier supplier){
-        if(!suppliers.contains(supplier))
-            suppliers.add(supplier);
+        if (object.getClassName().equals("Supplier"))
+            suppliers.add((Supplier)object);
     }
 
 
@@ -397,8 +401,8 @@ public class main {
     private static void initiateSystem() {
         Address address = new Address("a","ads",4);
         Supplier s = new Supplier(IDGenerate(), "moshe");
-        Product p0 = new Product("Bamba", "Bamba", s, 10);
-        Product p1 = new Product("Ramen", "Ramen", s, 20);
+        Product p0 = new Product("Bamba", "tom", s, 10);
+        Product p1 = new Product("Ramen", "barak", s, 20);
         Web_User user = new Web_User(IDGenerate(),"000",UserState.New);
 
         ShoppingCart shoppingCart = new ShoppingCart(IDGenerate(), user);
@@ -410,17 +414,6 @@ public class main {
         p1.updateSupplier(s);
         s.addProduct(p0);
         s.addProduct(p1);
-
-        /**
-        suppliers.add(s);
-        products.put(p0.getId(), p0);
-        products.put(p1.getId(), p1);
-        objects.put(s.getId(), s);
-        objects.put(p0.getId(), p0);
-        objects.put(p1.getId(), p1);
-        objects.put(a.getId(),a);
-        objects.put(c.getId(),c);
-         */
     }
 
     public static String IDGenerate(){
@@ -485,6 +478,5 @@ public class main {
 
 
     }
-
 
 }

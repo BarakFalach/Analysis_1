@@ -25,7 +25,7 @@ public class Account extends myObject{
         this.ordersList = new ArrayList<>();
         this.paymentsList = new ArrayList<>();
         shoppingCart.setAccount(this);
-        main.addToObjects(id, this);
+        main.addToObjects(this);
     }
 
     public void addOrder(Order newOrder){
@@ -141,5 +141,6 @@ public class Account extends myObject{
         for(Order order: ordersList){
             order.deleteObject();
         }
+        main.removeFromObjects(this);
     }
 }

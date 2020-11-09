@@ -13,7 +13,15 @@ public class LineItem extends myObject{
         this.myShoppingCart=myOrder.getMyAccount().getShoppingCart();
         this.myOrder = myOrder;
         this.ID = ID;
-        main.addToObjects(ID, this);
+        main.addToObjects(this);
+    }
+
+    public void deleteObject(){
+        this.myOrder.removeLineItem(this);
+        if(this.myShoppingCart!=null)
+            this.myShoppingCart.removeLineItem(this);
+        this.myProduct.removeLineItem(this);
+        main.removeFromObjects(this);
     }
 
     public int getPrice() {
@@ -23,8 +31,4 @@ public class LineItem extends myObject{
         return this.ID;
     }
 
-    @Override
-    public void deleteObject() {
-
-    }
 }

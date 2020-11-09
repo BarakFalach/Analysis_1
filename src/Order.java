@@ -21,7 +21,7 @@ public class Order extends myObject{
         this.status = OrderStatus.New;
         lineItemList = new ArrayList<>();
         paymentsList = new ArrayList<>();
-        main.addToObjects(number, this);
+        main.addToObjects(this);
     }
 
     public void setShipped(Date shipped) {
@@ -82,7 +82,9 @@ public class Order extends myObject{
 
     @Override
     public void deleteObject() {
-
+        while (this.lineItemList.size()!=0)
+            this.lineItemList.get(0).deleteObject();
+        main.removeFromObjects(this);
     }
 
     public void removeLineItem(LineItem lineItem){

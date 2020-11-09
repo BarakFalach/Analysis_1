@@ -9,8 +9,7 @@ public class Supplier extends myObject{
         id = _id;
         name = _name;
         productList = new ArrayList<>();
-        main.addToObjects(id, this);
-        main.addToSupplier(this);
+        main.addToObjects(this);
     }
     public void addProduct(Product newProduct)
     {
@@ -30,10 +29,10 @@ public class Supplier extends myObject{
         return productList.indexOf(product);
     }
 
-    public Product getProductByID(String id)
+    public Product getProductByName(String name)
     {
         for (Product product : productList){
-            if (product.getId().equals(id))
+            if (product.getName().equals(name))
                 return product;
         }
         return null;

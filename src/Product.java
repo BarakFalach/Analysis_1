@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Product extends myObject{
     private String id;
     private String name;
@@ -5,6 +7,7 @@ public class Product extends myObject{
     private int price;
     private PremiumAccount premiumAccount;
     private int quantity;
+    private ArrayList<LineItem> lineItems;
 
     public Product(String id, String name, Supplier mySupplier, int price) {
         this.id = id;
@@ -12,14 +15,28 @@ public class Product extends myObject{
         this.mySupplier = mySupplier;
         this.price = price;
         this.premiumAccount = null;
-        main.addToObjects(id, this);
-        main.addToProduct(id, this);
+        this.lineItems = new ArrayList<>();
+        main.addToObjects(this);
     }
 
     public void updateSupplier(Supplier newSupplier) {
         if(mySupplier!=null)
             removeFromSupplier();
         mySupplier = newSupplier;
+    }
+
+    public void addItem(LineItem lineItem){
+        this.lineItems.add(lineItem);
+    }
+
+    @Override
+    public void deleteObject(){
+        for (LineItem item: this.lineItems)
+            item.deleteObject();
+        if (this.premiumAccount!=null)
+            this.premiumAccount.removeProduct(this);
+        this.mySupplier.removeProduct(this);
+        main.removeFromObjects(this);
     }
 
     public void removeFromSupplier() {
@@ -32,6 +49,10 @@ public class Product extends myObject{
 
     public void setPremiumAccount(PremiumAccount premiumAccount){
         this.premiumAccount = premiumAccount;
+    }
+
+    public void removeLineItem(LineItem item){
+        lineItems.remove(item);
     }
 
     public String toString() {
@@ -57,8 +78,7 @@ public class Product extends myObject{
         return id;
     }
 
-    @Override
-    public void deleteObject() {
-
+    public String getName() {
+        return name;
     }
 }
