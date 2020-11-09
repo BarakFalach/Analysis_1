@@ -255,11 +255,11 @@ public class main {
     private static void LinkProduct(Scanner scan, String id) {
         //if(!objects.get(id).getClassName().equals("WebUser"))
         //    return;
-        PremiumAccount curPremiumAcoount;
+        PremiumAccount curPremiumAccoount;
         Product curProduct;
         boolean hasNoAccount = true;
         if(((Web_User)objects.get(id)).getCustomer().getAccount().getClass().getSimpleName().equals("PremiumAccount")){
-            curPremiumAcoount=(PremiumAccount)(((Web_User)objects.get(id)).getCustomer().getAccount());
+            curPremiumAccoount=(PremiumAccount)(((Web_User)objects.get(id)).getCustomer().getAccount());
             System.out.println(products.toString());
             while(hasNoAccount){
                 System.out.println("Enter a product name that you would like to connect");
@@ -270,7 +270,8 @@ public class main {
                         System.out.println("This product already have account");
                         continue;}
                     hasNoAccount=false;
-                    curProduct.setPremiumAccount(curPremiumAcoount);
+                    curProduct.setPremiumAccount(curPremiumAccoount);
+                    curPremiumAccoount.addProduct(curProduct);
                     System.out.println("Enter price for product "+ productid);
                     String newPrice = scan.nextLine();
                     curProduct.setPrice(Integer.parseInt(newPrice));
