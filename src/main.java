@@ -285,12 +285,11 @@ public class main {
 
     public static void MakeOrder(Scanner scan,String accountID) { //TODO:: function isn't complete
         Account curAccount = ((Web_User) objects.get(accountID)).getCustomer().getAccount();
-        Supplier curSupplier;
+        myObject object = null;
         Product curProduct;
         LineItem curLineItem;
 
         Order newOrder = new Order(IDGenerate(),curAccount.getOpen(),curAccount); //TODO:: get Date from account need to be Checked
-        //objects.put(newOrder.getId(),newOrder);
         newOrder.setMyAccount(curAccount);
         curAccount.addOrder(newOrder);
         String input;
@@ -300,15 +299,18 @@ public class main {
         while (PlacingOrder){
             System.out.println("Enter Supplier/Premium account name:");
             input = scan.nextLine();
-            curSupplier = getSupplierByName(input);
-            if (curSupplier==null) {
+            object = getSupplierByName(input);
+            if(object==null)
+                object = getAccountByName(input);
+
+            if (object == null) {
                 System.out.println("Supplier/Premium account Doesn't exist");
                 continue;
             }
             PlacingOrder=false;
             while (moreProducts) {
                 System.out.println("Enter Product name from the Product List:");
-                System.out.println(curSupplier);
+                System.out.println(object.getName());
                 input = scan.nextLine();
                 curProduct = curSupplier.getProductByName(input);
                 if (curProduct==null){
@@ -318,8 +320,7 @@ public class main {
                 System.out.println("Enter quantity");
                 quantity = scan.nextLine();
                 curLineItem = new LineItem(IDGenerate(),Integer.parseInt(quantity),newOrder,curProduct);
-                //objects.put(curLineItem.getId(),curLineItem);
-                newOrder.addLineItem(curLineItem); //TODO:: add ID for everyObject
+                newOrder.addLineItem(curLineItem);
                 curAccount.getShoppingCart().addLineItem(curLineItem);
                 System.out.println("Product Added to you'r Order '\n' Would you like to add more Products? y/n");
                 input = scan.nextLine();
@@ -449,6 +450,14 @@ public class main {
         for (Supplier supplier : suppliers) {
             if (supplier.getName().equals(curSupplierName))
                 return supplier;
+        }
+        return null;
+    }
+
+    public static Account getAccountByName(String curPremiumAccount){
+        for (String s : objects.keySet()) {
+            if (objects.get(s).getClass().getSimpleName().equals("PremiumAccount") && s.equals(curPremiumAccount))
+                return (Account) objects.get(s);
         }
         return null;
     }
